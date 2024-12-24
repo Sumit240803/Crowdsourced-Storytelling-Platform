@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config(); // For JWT_SECRET from the environment variables
-
 // Middleware to verify JWT token
 const verifyJwt = (req, res, next) => {
   // Get the token from the Authorization header
