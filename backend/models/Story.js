@@ -10,7 +10,10 @@ const storySchema = new Schema({
   },
   content: {
     type: String,
-    required: true,
+    
+  },
+  synopsis : {
+    type : String
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -24,14 +27,6 @@ const storySchema = new Schema({
   tags: [{
     type: String,
   }],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
   status: {
     type: String,
     enum: ['draft', 'published', 'archived'],
@@ -49,11 +44,9 @@ const storySchema = new Schema({
   likes: {
     type: Number,
     default: 0,
-  },
-  views: {
-    type: Number,
-    default: 0,
-  },
+  }
+},{
+  timestamps : true
 });
 
 storySchema.pre('save', function (next) {
