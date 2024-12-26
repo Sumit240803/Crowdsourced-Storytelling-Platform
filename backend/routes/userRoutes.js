@@ -95,6 +95,100 @@ router.post("/invite" , verifyJwt , async(req,res)=>{
         return res.status(500).json({ "Message": error.message });
     }
 });
+
+// Invitations
+
+router.get("/invites" , verifyJwt , async(req,res)=>{
+    try {
+        const id = req.user.userId;
+        const user = await User.findById(id);
+        const invites = user.invites;
+        if(invites){
+            return res.status(200).json({"Message" : invites});
+        }else{
+            return res.status(404).json({"Message" : "No invites"});
+        }
+    } catch (error) {
+        console.error("Error in /invite route:", error);
+        return res.status(500).json({ "Message": error.message });
+    }
+})
+
+router.post("/accept/:id" , verifyJwt , async(req,res)=>{
+    try {
+        const id = req.params;
+        const userId = req.user.userId;
+        const user = await User.findById(userId);
+        const story = await Story.findById(id);
+        if(story){
+            story.collaborators.push(userId);
+            user.invites =  user.invites.filter(invite=>invite!==id);
+            const notification = [
+                {
+                    message : `You have accepted the invitation for the story ${story.title}`,
+                    userId : userId
+                },
+                {
+                    message : `${user.username} has accepted your invitation for the story ${story.title}`,
+                    userId : story.author
+                }
+            ];
+            await Notification.insertMany(notification);
+            await user.save();
+            await story.save();
+            res.status(200).json({ message: "Invitation accepted successfully" });
+
+        }
+    } catch (error) {
+        console.error("Error accepting invite:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+})
+
+router.post("/reject/:id", verifyJwt, async (req, res) => {
+    try {
+        // Get the story ID from params and the user ID from the JWT
+        const { id } = req.params;  // Destructure id from params
+        const userId = req.user.userId;
+
+        // Fetch the user and story
+        const user = await User.findById(userId);
+        const story = await Story.findById(id);
+
+        if (!user || !story) {
+            return res.status(404).json({ message: "User or story not found" });
+        }
+
+        // Remove the rejected story ID from user's invites
+        user.invites = user.invites.filter(invite => invite !== id);
+
+        // Create rejection notifications
+        const notifications = [
+            {
+                message: `You have rejected the invitation for the story ${story.title}`,
+                userId: userId,
+            },
+            {
+                message: `${user.username} has rejected your invitation for the story ${story.title}`,
+                userId: story.author,
+            },
+        ];
+
+        // Insert notifications into the Notification collection
+        await Notification.insertMany(notifications);
+
+        // Save the changes to the user
+        await user.save();
+
+        // Send success response
+        res.status(200).json({ message: "Invitation rejected successfully" });
+
+    } catch (error) {
+        console.error("Error rejecting invite:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+});
+
 // Getting the joined stories
 
 router.get('/joined-stories', verifyJwt, async (req, res) => {
