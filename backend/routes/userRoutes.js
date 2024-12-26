@@ -3,6 +3,7 @@ const express = require("express");
 const verifyJwt = require("../middlewares/verify");
 const User = require("../models/User");
 const Story = require("../models/Story");
+const Notification = require("../models/Notification");
 
 
 const router = express.Router();
@@ -47,7 +48,7 @@ router.post("/story" , verifyJwt , async(req,res)=>{
 
 //Joining the Story
 
-router.post("/join-story" , verifyJwt , async(req,res)=>{
+/*router.post("/join-story" , verifyJwt , async(req,res)=>{
     try {
         const {storyId} = req.body;
         const id = req.user;
@@ -64,8 +65,36 @@ router.post("/join-story" , verifyJwt , async(req,res)=>{
     } catch (error) {
         return res.status(404).json({"Message" : "error occured"});
     }
-});
+});*/
 
+//Inviting Collaborators
+
+router.post("/invite" , verifyJwt , async(req,res)=>{
+    try {
+        const {storyId , userIds} = req.body;
+        const id = req.user.userId;
+        const user = await User.findById(id);
+        const story = await Story.findById(storyId).populate('author','username');
+        if(!story.author.equals(id)){
+            return res.status(404).json({"Message" : "error occured"});
+        }
+        const notifications = [];
+        for(const userId of userIds){
+            notifications.push({
+                message: `You have been invited by ${story.author.username} to collaborate on the story "${story.title}. Checkout your invite section to manage the invitations."`,
+                userId,
+            });
+            await User.findByIdAndUpdate(userId , {
+                $addToSet : {invites : storyId}
+            },{new : true})
+        }
+        await Notification.insertMany(notifications);
+        return res.status(200).json({ "Message": "Invitations sent successfully" });
+    } catch (error) {
+        console.error("Error in /invite route:", error);
+        return res.status(500).json({ "Message": error.message });
+    }
+});
 // Getting the joined stories
 
 router.get('/joined-stories', verifyJwt, async (req, res) => {
@@ -93,6 +122,8 @@ router.get('/joined-stories', verifyJwt, async (req, res) => {
         return res.status(500).json({ "Message": error.message });
     }
 });
+
+
 
 
 

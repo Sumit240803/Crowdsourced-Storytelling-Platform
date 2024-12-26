@@ -64,7 +64,11 @@ const UserSchema = new mongoose.Schema({
   isBlocked: {
     type: Boolean,
     default: false
-  }
+  },
+  invites : [{
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'Story'
+  }]
 });
 
 // Pre-save hook to hash the password before saving to DB
