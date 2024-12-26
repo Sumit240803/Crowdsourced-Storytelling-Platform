@@ -8,10 +8,10 @@ const storySchema = new Schema({
     required: true,
     trim: true,
   },
-  content: {
-    type: String,
-    
-  },
+  content: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chapters',
+  }],
   synopsis : {
     type : String
   },

@@ -45,6 +45,8 @@ router.post("/story" , verifyJwt , async(req,res)=>{
     }
 });
 
+//Joining the Story
+
 router.post("/join-story" , verifyJwt , async(req,res)=>{
     try {
         const {storyId} = req.body;
@@ -64,14 +66,16 @@ router.post("/join-story" , verifyJwt , async(req,res)=>{
     }
 });
 
+// Getting the joined stories
+
 router.get('/joined-stories', verifyJwt, async (req, res) => {
     try {
         const userId = req.user.userId;
 
         // Fetch user and populate the referenced story fields
         const user = await User.findById(userId)
-            .populate('storiesParticipated')
-            .populate('storiesCreated');
+            .populate('storiesParticipated','title content synopsis status')
+            .populate('storiesCreated' , 'title content synopsis status');
 
         if (!user) {
             return res.status(404).json({ "Message": "User not found" });

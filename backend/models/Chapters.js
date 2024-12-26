@@ -2,15 +2,19 @@ const mongoose = require("mongoose");
 
 
 const chapterSchema = new mongoose.Schema({
+    chapterNumber : {
+        type : Number,
+        required : true
+    },
     name : {
         type : String
     },
-    storyId : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Story"
-    },
     content : {
         type : String
+    },
+    storyId :{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Story'
     }
 })
 
