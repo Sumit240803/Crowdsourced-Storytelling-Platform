@@ -47,7 +47,7 @@ router.get("/chapters/:id" , verifyJwt , async(req,res)=>{
     }
 });
 
-router.get("/story/:id" , async(req,res)=>{
+router.get("/getStory/:id" , async(req,res)=>{
     try {
         const id = req.params;
         const story = await Story.findById(id).populate('content');
@@ -60,7 +60,7 @@ router.get("/story/:id" , async(req,res)=>{
     }
 });
 
-router.get("/story", async (req, res) => {
+router.get("/stories", async (req, res) => {
     try {
         // Get the page number and limit from query parameters (default to page 1 and limit 10)
         const page = parseInt(req.query.page) || 1;

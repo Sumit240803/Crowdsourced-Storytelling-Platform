@@ -116,7 +116,7 @@ router.get("/invites" , verifyJwt , async(req,res)=>{
 
 router.post("/accept/:id" , verifyJwt , async(req,res)=>{
     try {
-        const id = req.params;
+        const {id} = req.params;
         const userId = req.user.userId;
         const user = await User.findById(userId);
         const story = await Story.findById(id);
