@@ -1,3 +1,5 @@
+import { Anton } from 'next/font/google';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -11,6 +13,12 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily : {
+        anton : ['var(--font-anton)','sans-serif'],
+        pacifico : ['var(--font-pacifico)','sans-serif'],
+        amaranth : ['var(--font-amaranth)' ,'sans-serif'],
+        comic : ['var(--font-comic)' ,'sans-serif']
+      }
     },
   },
   plugins: [],
