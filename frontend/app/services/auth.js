@@ -11,6 +11,8 @@ export const login = async(email,password)=>{
         if(response.ok){
             const data = await response.json();
             return data;
+        }else{
+            return false;
         }
     } catch (error) {
         console.log(error);

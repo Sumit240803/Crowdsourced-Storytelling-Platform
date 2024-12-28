@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import Login from './Login';
+import Register from './Register';
 
 const PublicNav = () => {
   return (
@@ -16,6 +17,7 @@ const PublicNav = () => {
 
         <Login/>
         </div>
+       
         
       </div>
     </div>
