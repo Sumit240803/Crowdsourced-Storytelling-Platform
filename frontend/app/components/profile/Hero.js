@@ -41,7 +41,7 @@ const Hero = () => {
   ];
 
   return (
-    <div className="bg-[url('/bg-5.jpg')] bg-cover bg-center px-4 py-8">
+    <div className="bg-[url('/bg-6.jpg')] bg-cover bg-center px-4 py-8">
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
         {cards.map((card) => (
           <div

@@ -1,9 +1,8 @@
 "use client"
-import Hero from '@/app/components/profile/Hero'
 import Nav from '@/app/components/profile/Nav'
+import RecentStories from '@/app/components/RecentStories'
 import useAuth from '@/app/hooks/useAuth'
-import { checkAuth } from '@/app/services/checkAuth'
-import { useRouter } from 'next/navigation'
+
 import React, { useEffect, useState } from 'react'
 
 const Profile = () => {
@@ -15,7 +14,7 @@ const Profile = () => {
             <Nav/>
           </div>
           <div>
-            <Hero/>
+            <RecentStories/>
           </div>
         </>}
     </div>

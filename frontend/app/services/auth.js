@@ -36,3 +36,13 @@ export const register = async(username , email , password)=>{
         console.log(error);
     }
 }
+
+
+export const logout = ()=>{
+    if(typeof window !== "undefined"){
+        
+        localStorage.clear();
+        window.location.href = "/"
+        return true;
+    }
+}

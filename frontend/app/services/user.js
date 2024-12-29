@@ -1,20 +1,23 @@
 
 
+// services/user.js
 export const me = async (token) => {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/me`, {
             headers: {
-                "Authorization": `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
         });
         if (response.ok) {
             const data = await response.json();
             return data;
         }
     } catch (error) {
-        console.log(error);
+        console.error("Error fetching user data:", error);
     }
-}
+    return null; // Return null in case of failure
+};
+
 
 export const createStory = async (title, synopsis, tags, collaborators, token) => {
     try {
