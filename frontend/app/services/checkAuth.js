@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+
 import { jwtDecode } from 'jwt-decode';
 export const checkAuth =()=>{
     if(typeof window !== 'undefined'){
