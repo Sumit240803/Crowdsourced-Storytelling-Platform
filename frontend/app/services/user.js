@@ -126,3 +126,31 @@ export const joinedStories = async(token)=>{
     }
 }
 
+export const uploadImage = async (token, file) => {
+    try {
+      // Create a form data object to include the image file
+      const formData = new FormData();
+      formData.append('image', file); // 'image' should match the key used in the backend route
+  
+      // Send the image file to the backend API
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/image`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData, // Attach the image file
+      });
+  
+      // Handle the response
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+  
+      const data = await response.json();
+      return data.url; // Return the uploaded image URL
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error; // Re-throw error for the calling function to handle
+    }
+  };
+  

@@ -4,9 +4,37 @@ const verifyJwt = require("../middlewares/verify");
 const User = require("../models/User");
 const Story = require("../models/Story");
 const Notification = require("../models/Notification");
-
-
+const cloudinary = require("cloudinary").v2;
+const {CloudinaryStorage} = require("multer-storage-cloudinary");
+const multer = require('multer');
+require("dotenv").config();
 const router = express.Router();
+cloudinary.config({
+    cloud_name : process.env.CLOUD_NAME,
+    api_key : process.env.API_KEY,
+    api_secret : process.env.API_SECRET
+});
+const storage = new CloudinaryStorage({
+    cloudinary : cloudinary,
+    params : {
+        folder : "user-images",
+        allowed_formats : ['jpg' , 'jpeg' , 'png']
+    }
+});
+const upload = multer({storage});
+
+router.post("/image" , verifyJwt , upload.single('image') , async(req,res)=>{
+    try {
+        const imageUrl = req.file.path; // Cloudinary URL
+        res.status(200).json({
+          message: 'Image uploaded successfully',
+          url: imageUrl,
+        });
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        res.status(500).json({ message: 'Image upload failed', error });
+      }
+})
 //User Profile
 router.get("/me" ,verifyJwt  , async(req,res)=>{
     try {
@@ -217,6 +245,8 @@ router.get('/joined-stories', verifyJwt, async (req, res) => {
     }
 });
 
+
+router
 
 
 
