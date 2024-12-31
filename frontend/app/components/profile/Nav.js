@@ -43,11 +43,11 @@ const Nav = () => {
         <Link className="text-lg text-orange-600 hover:text-orange-400 pt-1" href="/pages/user">
            <CiUser  color='yellow'/>
           </Link>
-          <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="#">
+          <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="/pages/write">
            Write Story
           </Link>
           
-          <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="#">
+          <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="/pages/stories">
            My Stories
           </Link>
           <div className="text-lg text-yellow-600 hover:text-yellow-400 cursor-pointer" onClick={logout} >

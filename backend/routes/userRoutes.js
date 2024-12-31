@@ -86,7 +86,7 @@ router.post("/story" , verifyJwt , async(req,res)=>{
         user.storiesCreated.push(story._id);
         user.storiesParticipated.push(story._id);
         await user.save();
-        return res.status(200).json({"Message" : "Story Created"})
+        return res.status(200).json({"Message" : "Story Created" , "id" : story._id})
     } catch (error) {
         return res.status(404).json({"Message" : error})
     }
