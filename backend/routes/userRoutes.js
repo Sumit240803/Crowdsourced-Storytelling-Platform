@@ -23,22 +23,36 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({storage});
 
-router.post("/image" , verifyJwt , upload.single('image') , async(req,res)=>{
+router.post("/image", verifyJwt, upload.single('image'), async (req, res) => {
     try {
-        const imageUrl = req.file.path;
+        const imageUrl = req.file.path; // New uploaded image URL
+        const publicId = req.file.filename; // Get the public ID of the uploaded image
         const id = req.user.userId;
+
+        // Find the user in the database
         const user = await User.findById(id);
+
+        // Delete the previous image if it exists
+        if (user.profilePicture) {
+            // Extract public ID of the previous image
+            const oldPublicId = user.profilePicture.split('/').pop().split('.')[0];
+            await cloudinary.uploader.destroy(`user-images/${oldPublicId}`);
+        }
+
+        // Save the new profile picture
         user.profilePicture = imageUrl;
-        await user.save(); // Cloudinary URL
+        await user.save();
+
         res.status(200).json({
-          message: 'Image uploaded successfully',
-          url: imageUrl,
+            message: 'Image uploaded successfully',
+            url: imageUrl,
         });
-      } catch (error) {
+    } catch (error) {
         console.error('Error uploading image:', error);
         res.status(500).json({ message: 'Image upload failed', error });
-      }
-})
+    }
+});
+
 //User Profile
 router.get("/me" ,verifyJwt  , async(req,res)=>{
     try {
