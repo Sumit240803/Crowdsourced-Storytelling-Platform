@@ -48,7 +48,7 @@ const Nav = () => {
           </Link>
           
           <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="#">
-           Joined Stories
+           My Stories
           </Link>
           <div className="text-lg text-yellow-600 hover:text-yellow-400 cursor-pointer" onClick={logout} >
            LogOut
