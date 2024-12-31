@@ -25,7 +25,11 @@ const upload = multer({storage});
 
 router.post("/image" , verifyJwt , upload.single('image') , async(req,res)=>{
     try {
-        const imageUrl = req.file.path; // Cloudinary URL
+        const imageUrl = req.file.path;
+        const id = req.user.userId;
+        const user = await User.findById(id);
+        user.profilePicture = imageUrl;
+        await user.save(); // Cloudinary URL
         res.status(200).json({
           message: 'Image uploaded successfully',
           url: imageUrl,

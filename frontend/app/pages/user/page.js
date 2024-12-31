@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { me } from "@/app/services/user";
+import { me, uploadImage } from "@/app/services/user";
 import useAuth from "@/app/hooks/useAuth";
 import Image from "next/image";
 import Nav from "@/app/components/profile/Nav";
@@ -11,6 +11,7 @@ import { FaPeopleRoof, FaPeopleGroup } from "react-icons/fa6";
 
 const User = () => {
     const showAlert = useAuth();
+    const token = localStorage.getItem("token");
     const [user, setUser] = useState(null);
     const fileInputRef = useRef(null); // Reference to the hidden file input
 
@@ -37,7 +38,9 @@ const User = () => {
         const file = event.target.files[0];
         if (file) {
             console.log("Selected file:", file);
-            // Here you can call your image upload API and update the profile picture
+            const data = await uploadImage(token , file);
+            setUser((preUser)=>({...preUser,profilePicture : data}));
+            console.log(data);
         }
     };
 
