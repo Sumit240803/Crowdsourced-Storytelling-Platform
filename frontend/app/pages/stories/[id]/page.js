@@ -38,7 +38,7 @@ const Id = () => {
                 ))}
             </div>
         ) : (
-            <p>Loading chapters...</p>
+            <p>No chapters created</p>
         )}
     </div>
 );
