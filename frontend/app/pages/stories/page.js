@@ -1,6 +1,7 @@
 "use client"
 import Nav from '@/app/components/profile/Nav'
 import { joinedStories } from '@/app/services/user'
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
 const MyStory = () => {
@@ -31,7 +32,7 @@ const MyStory = () => {
           {stories.storiesParticipated.length > 0 ? (
             stories.storiesParticipated.map((story) => (
               <div key={story._id} className="p-4 border rounded bg-gray-900">
-                <h3 className="text-2xl font-bold text-orange-700  font-amaranth">{story.title}</h3>
+                 <Link href={`/pages/stories/${story._id}`} className="text-2xl font-bold text-orange-700  font-amaranth">{story.title}</Link>
                 <p className="italic text-gray-500">{story.synopsis}</p>
               </div>
             ))
@@ -47,7 +48,7 @@ const MyStory = () => {
           {stories.storiesCreated.length > 0 ? (
             stories.storiesCreated.map((story) => (
               <div key={story._id} className="p-4 border rounded bg-gray-900">
-                <h3 className="text-2xl font-bold text-orange-700  font-amaranth">{story.title}</h3>
+                <Link href={`/pages/stories/${story._id}`} className="text-2xl font-bold text-orange-700  font-amaranth">{story.title}</Link>
                 <p className="italic text-gray-500">{story.synopsis}</p>
               </div>
             ))

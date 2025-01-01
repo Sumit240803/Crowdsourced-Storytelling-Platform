@@ -8,9 +8,13 @@ const router = express.Router();
 router.post("/write-chapter" , verifyJwt , async(req,res)=>{
     try {
         const id = req.user.userId;
+        console.log("User id :",id );
        // const user = await User.findById(id);
         const {content , storyId,name,number} = req.body;
-        const story = await Story.findById(storyId);
+        console.log("Story ID" , storyId);
+        const story = await Story.findOne({_id : storyId});
+        
+        console.log("Body ",req.body);
         const existingChapter =await Chapters.findOne({storyId : storyId});
         if(story.author.equals(id) || story.collaborators.includes(id)){
             if(existingChapter){
@@ -23,16 +27,18 @@ router.post("/write-chapter" , verifyJwt , async(req,res)=>{
                     chapterNumber : number,
                     name : name,
                     content : content,
-                    storyId : storyId
+                    storyId : storyId,
                 });
                 story.content.push(chapter._id);
+                story.status = 'published'
                 await chapter.save();
             }
             await story.save();
             return res.status(200).json({"Message" : "Chapter Created"})
         }
     } catch (error) {
-        return res.status(404).json({"Message" : error})
+        console.log(error)
+        return res.status(400).json({"Message" : error})
     }
 });
 
@@ -49,7 +55,7 @@ router.get("/chapters/:id" , verifyJwt , async(req,res)=>{
 
 router.get("/getStory/:id" , async(req,res)=>{
     try {
-        const id = req.params;
+        const {id} = req.params;
         const story = await Story.findById(id).populate('content');
         if(!story){
             res.status(404).json({"Message" : "Not found"});

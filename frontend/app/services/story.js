@@ -3,6 +3,7 @@
 
 export const writeChapter = async(token , content , storyId , name , number)=>{
     try {
+        console.log(JSON.stringify({content : content , storyId : storyId , name : name , number : number,token}))
         const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/story/write-chapter`,{
             method : "POST",
             headers : {
@@ -14,6 +15,8 @@ export const writeChapter = async(token , content , storyId , name , number)=>{
         if (response.ok) {
             const data = await response.json();
             return data;
+        }else{
+            return await response.json();
         }
     } catch (error) {
         console.log(error);
@@ -45,6 +48,8 @@ export const getStory = async(token , id)=>{
         if (response.ok) {
             const data = await response.json();
             return data;
+        }else{
+            return await response.json();
         }
     } catch (error) {
         console.log(error);
