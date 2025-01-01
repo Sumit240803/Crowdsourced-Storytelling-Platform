@@ -40,8 +40,7 @@ const Create = () => {
     // Ensure tags and collaborators are empty arrays if no valid input
     const dataToSend = {
       ...formData,
-      tags: formData.tags.filter((tag) => tag), // Remove empty strings
-      collaborators: formData.collaborators.filter((collaborator) => collaborator), // Remove empty strings
+      tags: formData.tags.filter((tag) => tag) // Remove empty strings
     };
 
     try {
@@ -49,7 +48,6 @@ const Create = () => {
         dataToSend.title,
         dataToSend.synopsis,
         dataToSend.tags,
-        dataToSend.collaborators,
         token
       );
       if(data){
@@ -111,20 +109,7 @@ const Create = () => {
           />
         </div>
 
-        {/* Collaborators */}
-        <div className="mb-4">
-          <label htmlFor="collaborators" className="block text-lg font-medium mb-2">
-            Collaborators
-          </label>
-          <input
-            type="text"
-            id="collaborators"
-            name="collaborators"
-            onChange={handleChange}
-            className="w-full p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-            placeholder="e.g. John, Jane"
-          />
-        </div>
+        
 
         {/* Submit Button */}
         <button

@@ -71,7 +71,7 @@ router.get("/me" ,verifyJwt  , async(req,res)=>{
 
 router.post("/story" , verifyJwt , async(req,res)=>{
     try {
-        const {title , synopsis, tags , collaborators} = req.body;
+        const {title , synopsis, tags } = req.body;
         const id = req.user.userId;
         const user = await User.findById(id).select('-password');
         const story = new Story({
@@ -79,7 +79,6 @@ router.post("/story" , verifyJwt , async(req,res)=>{
             synopsis : synopsis,
             author : user._id,
             tags : tags,
-            collaborators : collaborators
         });
         
         await story.save();

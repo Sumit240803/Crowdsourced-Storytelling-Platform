@@ -5,42 +5,60 @@ const Story = require("../models/Story");
 const Chapters = require("../models/Chapters");
 const router = express.Router();
 
-router.post("/write-chapter" , verifyJwt , async(req,res)=>{
+router.post("/write-chapter", verifyJwt, async (req, res) => {
     try {
-        const id = req.user.userId;
-        console.log("User id :",id );
-       // const user = await User.findById(id);
-        const {content , storyId,name,number} = req.body;
-        console.log("Story ID" , storyId);
-        const story = await Story.findOne({_id : storyId});
-        
-        console.log("Body ",req.body);
-        const existingChapter =await Chapters.findOne({storyId : storyId});
-        if(story.author.equals(id) || story.collaborators.includes(id)){
-            if(existingChapter){
-                existingChapter.content = content;
-                existingChapter.name = name;
-                existingChapter.chapterNumber = number;
-                await existingChapter.save();
-            }else{
-                const chapter = new Chapters({
-                    chapterNumber : number,
-                    name : name,
-                    content : content,
-                    storyId : storyId,
-                });
-                story.content.push(chapter._id);
-                story.status = 'published'
-                await chapter.save();
-            }
-            await story.save();
-            return res.status(200).json({"Message" : "Chapter Created"})
+      const id = req.user.userId;
+      console.log("User id :", id);
+      const { content, storyId, name, number } = req.body;
+      console.log("Story ID:", storyId);
+  
+      // Find the story by ID
+      const story = await Story.findOne({ _id: storyId });
+      if (!story) {
+        return res.status(404).json({ Message: "Story not found" });
+      }
+  
+      console.log("Body:", req.body);
+  
+      // Check if the user is the author or a collaborator
+      if (story.author.equals(id) || story.collaborators.includes(id)) {
+        // Find the chapter by storyId and chapterNumber
+        const existingChapter = await Chapters.findOne({
+          storyId: storyId,
+          chapterNumber: number,
+        });
+  
+        if (existingChapter) {
+          // Update the existing chapter
+          existingChapter.content = content;
+          existingChapter.name = name;
+          await existingChapter.save();
+        } else {
+          // Create a new chapter
+          const newChapter = new Chapters({
+            chapterNumber: number,
+            name: name,
+            content: content,
+            storyId: storyId,
+          });
+  
+          // Add the new chapter to the story's content
+          story.content.push(newChapter._id);
+          story.status = "published";
+          await newChapter.save();
         }
+  
+        await story.save();
+        return res.status(200).json({ Message: "Chapter created or updated" });
+      } else {
+        return res.status(403).json({ Message: "Unauthorized" });
+      }
     } catch (error) {
-        console.log(error)
-        return res.status(400).json({"Message" : error})
+      console.log(error);
+      return res.status(400).json({ Message: error.message });
     }
-});
+  });
+  
 
 router.get("/chapters/:id" , verifyJwt , async(req,res)=>{
     try {
