@@ -263,7 +263,15 @@ router.get('/joined-stories', verifyJwt, async (req, res) => {
 });
 
 
-router
+router.get("/find" , verifyJwt , async(req,res)=>{
+    try {
+        const username = req.query;
+        const collaborator = await User.findOne({username : username});
+        res.status(200).json({"username" : collaborator.username , "img" : collaborator.profilePicture , "id" : collaborator._id});
+    } catch (error) {
+        
+    }
+});
 
 
 

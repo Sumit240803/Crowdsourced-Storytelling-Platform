@@ -154,3 +154,21 @@ export const uploadImage = async (token, file) => {
     }
   };
   
+
+export const search = async(token , name)=>{
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/find?${name}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        if(response.ok){
+            const data = await response.json();
+            return data;
+        }else{
+            return await response.json();
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}

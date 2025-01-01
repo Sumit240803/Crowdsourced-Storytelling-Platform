@@ -1,6 +1,7 @@
+import { invite, search } from '@/app/services/user';
 import React, { useState } from 'react';
 
-const Invite = ({ searchUsers, inviteCollaborator }) => {
+const Invite = ({token}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ const Invite = ({ searchUsers, inviteCollaborator }) => {
     // Call the search function to get filtered users based on the query
     setLoading(true);
     try {
-      const results = await searchUsers(query); // Assuming searchUsers is passed as a prop
+      const results = await search(token ,query); // Assuming searchUsers is passed as a prop
       setFilteredUsers(results);
     } catch (error) {
       console.error('Error searching users:', error);
@@ -25,7 +26,7 @@ const Invite = ({ searchUsers, inviteCollaborator }) => {
   // Handle sending an invite
   const handleInvite = async (userId) => {
     try {
-      await inviteCollaborator(userId); // Assuming inviteCollaborator is passed as a prop
+      await invite(userId); // Assuming inviteCollaborator is passed as a prop
       alert('Collaborator invited!');
     } catch (error) {
       console.error('Error inviting collaborator:', error);
