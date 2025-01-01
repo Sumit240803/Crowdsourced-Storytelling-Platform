@@ -1,26 +1,64 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import { createStory } from "@/app/services/user";
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 
 const Create = () => {
+  const [token, setToken] = useState(null);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     synopsis: "",
-    tags: "",
-    collaborators: "",
+    tags: [],
+    collaborators: [],
   });
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    if (name === "tags" || name === "collaborators") {
+      // Update tags or collaborators as arrays, splitting by commas
+      setFormData({
+        ...formData,
+        [name]: value ? value.split(",").map((item) => item.trim()) : [],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic
-    console.log("Form Data Submitted:", formData);
+
+    // Ensure tags and collaborators are empty arrays if no valid input
+    const dataToSend = {
+      ...formData,
+      tags: formData.tags.filter((tag) => tag), // Remove empty strings
+      collaborators: formData.collaborators.filter((collaborator) => collaborator), // Remove empty strings
+    };
+
+    try {
+      const data = await createStory(
+        dataToSend.title,
+        dataToSend.synopsis,
+        dataToSend.tags,
+        dataToSend.collaborators,
+        token
+      );
+      if(data){
+        router.replace(`/pages/write/${data.id}`)
+      }
+      console.log("Response Data:", data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -67,11 +105,9 @@ const Create = () => {
             type="text"
             id="tags"
             name="tags"
-            value={formData.tags}
             onChange={handleChange}
             className="w-full p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-            placeholder="e.g. Web, React, JavaScript"
-            required
+            placeholder="e.g. Horror, Romantic"
           />
         </div>
 
@@ -84,11 +120,9 @@ const Create = () => {
             type="text"
             id="collaborators"
             name="collaborators"
-            value={formData.collaborators}
             onChange={handleChange}
             className="w-full p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
             placeholder="e.g. John, Jane"
-            required
           />
         </div>
 
