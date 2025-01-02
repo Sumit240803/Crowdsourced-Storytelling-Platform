@@ -2,7 +2,7 @@
 import { invite, search } from '@/app/services/user';
 import React, { useState } from 'react';
 
-const Invite = () => {
+const Invite = ({id}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,9 +32,11 @@ const Invite = () => {
   };
 
   // Handle sending an invite
-  const handleInvite = async (userId) => {
+  const handleInvite = async (userId,storyId) => {
     try {
-      await invite(userId); // Assuming invite function is passed as a prop
+      const userArray =[];
+      userArray.push(userId);
+      await invite(storyId, userId ,token); // Assuming invite function is passed as a prop
       alert('Collaborator invited!');
     } catch (error) {
       console.error('Error inviting collaborator:', error);
@@ -75,7 +77,7 @@ const Invite = () => {
                 <span>{user.username}</span>
               </div>
               <button
-                onClick={() => handleInvite(user.id)}
+                onClick={() => handleInvite(id, user.id)}
                 className="ml-4 py-2 px-4 bg-orange-500 text-white rounded-md hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
               >
                 Invite

@@ -2,6 +2,7 @@
 import Nav from "@/app/components/profile/Nav";
 import Chapter from "@/app/components/write/Chapter";
 import { getStory } from "@/app/services/story";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -49,6 +50,12 @@ const Id = () => {
         >
           Add Chapter
         </button>
+        <Link
+          href={`/pages/stories/${id}/invite`}
+          className="px-4 py-2 bg-orange-600 m-2 text-white rounded"
+        >
+          Invite Collaborators
+        </Link>
       </div>
 
       <div className="space-y-4 m-2">
