@@ -263,16 +263,24 @@ router.get('/joined-stories', verifyJwt, async (req, res) => {
 });
 
 
-router.get("/find" , verifyJwt , async(req,res)=>{
+router.get("/find", verifyJwt, async (req, res) => {
     try {
-        const username = req.query;
-        const collaborator = await User.findOne({username : username});
-        res.status(200).json({"username" : collaborator.username , "img" : collaborator.profilePicture , "id" : collaborator._id});
+      const { username } = req.query; // Extract the username query parameter
+      const collaborator = await User.findOne({ username });
+      if (collaborator) {
+        res.status(200).json({
+          "username": collaborator.username,
+          "img": collaborator.profilePicture,
+          "id": collaborator._id
+        });
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
     } catch (error) {
-        
+      res.status(500).json({ message: "Error finding user" });
     }
-});
-
+  });
+  
 
 
 

@@ -1,10 +1,12 @@
+"use client"
 import { invite, search } from '@/app/services/user';
 import React, { useState } from 'react';
 
-const Invite = ({token}) => {
+const Invite = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("token");
 
   // Handle search query change
   const handleSearchChange = async (e) => {
@@ -14,10 +16,16 @@ const Invite = ({token}) => {
     // Call the search function to get filtered users based on the query
     setLoading(true);
     try {
-      const results = await search(token ,query); // Assuming searchUsers is passed as a prop
-      setFilteredUsers(results);
+      const results = await search(token, query);
+      if (results && results.username) {
+        // Wrap result in an array (even if it's just one user)
+        setFilteredUsers([results]); // You could also add a check for results.username if necessary
+      } else {
+        setFilteredUsers([]); // Empty result if no match found
+      }
     } catch (error) {
       console.error('Error searching users:', error);
+      setFilteredUsers([]);
     } finally {
       setLoading(false);
     }
@@ -26,7 +34,7 @@ const Invite = ({token}) => {
   // Handle sending an invite
   const handleInvite = async (userId) => {
     try {
-      await invite(userId); // Assuming inviteCollaborator is passed as a prop
+      await invite(userId); // Assuming invite function is passed as a prop
       alert('Collaborator invited!');
     } catch (error) {
       console.error('Error inviting collaborator:', error);
@@ -58,7 +66,14 @@ const Invite = ({token}) => {
         ) : (
           filteredUsers.map((user) => (
             <li key={user.id} className="flex justify-between items-center">
-              <span>{user.name}</span>
+              <div className="flex items-center">
+                <img
+                  src={user.img}
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full mr-4"
+                />
+                <span>{user.username}</span>
+              </div>
               <button
                 onClick={() => handleInvite(user.id)}
                 className="ml-4 py-2 px-4 bg-orange-500 text-white rounded-md hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
