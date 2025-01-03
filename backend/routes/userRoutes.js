@@ -281,7 +281,21 @@ router.get("/find", verifyJwt, async (req, res) => {
     }
   });
   
+router.get("/notification" , verifyJwt , async(req,res)=>{
+    try {
+        const userId = req.user.userId;
 
+        // Fetch user and populate the referenced story fields
+        const notification = await Notification.findOne({userId : userId});
+        if(notification){
+            res.status(200).json({"Notification" : notification.message});
+        }else {
+            res.status(404).json({ message: "Notification not found" });
+          }
+    } catch (error) {
+        res.status(500).json({ message: "Error finding Notification" });
+    }
+})
 
 
 module.exports = router;

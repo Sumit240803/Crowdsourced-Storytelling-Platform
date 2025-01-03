@@ -36,7 +36,8 @@ const Invite = ({id}) => {
     try {
       const userArray =[];
       userArray.push(userId);
-      await invite(storyId, userId ,token); // Assuming invite function is passed as a prop
+      console.log(userArray , storyId , token);
+      await invite(storyId, userArray ,token); // Assuming invite function is passed as a prop
       alert('Collaborator invited!');
     } catch (error) {
       console.error('Error inviting collaborator:', error);
