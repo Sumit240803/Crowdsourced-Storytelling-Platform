@@ -1,6 +1,6 @@
 "use client"
 import Nav from '@/app/components/profile/Nav'
-import { joinedStories } from '@/app/services/user'
+import { getInvite, joinedStories } from '@/app/services/user'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
@@ -11,7 +11,9 @@ const MyStory = () => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
       const data = await joinedStories(token);
+      const invitation = await getInvite(token);
       console.log(data);
+      console.log(invitation)
 
       // Assuming the response structure matches the one provided
       setStories({
