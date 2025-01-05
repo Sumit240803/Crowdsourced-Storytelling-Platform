@@ -300,7 +300,7 @@ router.get("/find", verifyJwt, async (req, res) => {
         const userId = req.user.userId;
 
         // Fetch notifications based on userId
-        const notifications = await Notification.find({ userId: userId });
+        const notifications = await Notification.find({ userId: userId ,status : 'unread'});
 
         // Check if notifications exist
         if (notifications.length > 0) {
@@ -313,6 +313,28 @@ router.get("/find", verifyJwt, async (req, res) => {
     } catch (error) {
         console.error("Error finding notifications:", error);
         res.status(500).json({ message: "Error finding notifications" });
+    }
+});
+
+
+router.put("/notification/mark-as-read", verifyJwt, async (req, res) => {
+    try {
+        const userId = req.user.userId;
+
+        // Update notifications for the user to mark them as 'read'
+        const result = await Notification.updateMany(
+            { userId: userId, status: 'unread' }, // Filter unread notifications
+            { $set: { status: 'read' } }          // Set status to 'read'
+        );
+
+        if (result.modifiedCount > 0) {
+            res.status(200).json({ message: "Notifications marked as read", modifiedCount: result.modifiedCount });
+        } else {
+            res.status(404).json({ message: "No unread notifications to mark as read" });
+        }
+    } catch (error) {
+        console.error("Error updating notifications:", error);
+        res.status(500).json({ message: "Error updating notifications" });
     }
 });
 

@@ -192,4 +192,16 @@ export const getNotification=async(token)=>{
         console.log(error);
     }
 }
+
+export const markNotificationsAsRead = async (token) => {
+    const response = await fetch('/api/notification/mark-as-read', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  };
+  
   
