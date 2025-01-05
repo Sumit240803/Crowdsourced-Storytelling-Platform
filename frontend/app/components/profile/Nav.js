@@ -1,17 +1,46 @@
+"use client";
 import { logout } from '@/app/services/auth';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { CiUser } from "react-icons/ci";
+import { getNotification } from '@/app/services/user';
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0); // To store notification count
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.log("No token found, please login.");
+          return;
+        }
+
+        const data = await getNotification(token);
+        console.log('Notification Data:', data); // Log the notification data
+
+        // Check if the data is an array and set the notification count
+        if (Array.isArray(data)) {
+          setNotificationCount(data.length); // Set the number of notifications
+        } else {
+          console.log('Data is not an array:', data);
+        }
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
 
   return (
     <div className="relative font-amaranth bg-gradient-to-r from-[#0e1a2b] via-[#251a31] to-[#4a2305]">
@@ -19,15 +48,21 @@ const Nav = () => {
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800 md:px-10">
         <Link href={"/pages/profile"} className="text-2xl text-orange-600 sm:text-3xl md:text-4xl">Narrato</Link>
         <div className="flex items-center space-x-4">
-          <button className="text-orange-600 hover:text-orange-400">
+          <button className="relative text-orange-600 hover:text-orange-400">
             <IoMdNotificationsOutline color='yellow' size={24} />
+            {/* Show a dot or a number if there are notifications */}
+            {notificationCount > 0 && (
+              <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+                {notificationCount > 9 ? "9+" : notificationCount}
+              </div>
+            )}
           </button>
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
               className="text-orange-600 focus:outline-none hover:text-orange-400"
             >
-              {isOpen ? <AiOutlineClose  size={24} /> : <AiOutlineMenu  size={24} />}
+              {isOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
             </button>
           </div>
         </div>
@@ -35,23 +70,20 @@ const Nav = () => {
 
       {/* Side Navigation */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-[#0e1a2b] transition-transform transform md:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:relative md:h-auto md:flex md:w-auto md:items-center`}
+        className={`fixed top-0 left-0 h-full w-64 bg-[#0e1a2b] transition-transform transform md:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:h-auto md:flex md:w-auto md:items-center`}
       >
         <nav className="flex flex-col px-6 py-8 space-y-4 md:flex-row md:space-y-0 md:space-x-6 md:py-0">
-        <Link className="text-lg text-orange-600 hover:text-orange-400 pt-1" href="/pages/user">
-           <CiUser  color='yellow'/>
+          <Link className="text-lg text-orange-600 hover:text-orange-400 pt-1" href="/pages/user">
+            <CiUser color='yellow'/>
           </Link>
           <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="/pages/write">
-           Write Story
+            Write Story
           </Link>
-          
           <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="/pages/stories">
-           My Stories
+            My Stories
           </Link>
-          <div className="text-lg text-yellow-600 hover:text-yellow-400 cursor-pointer" onClick={logout} >
-           LogOut
+          <div className="text-lg text-yellow-600 hover:text-yellow-400 cursor-pointer" onClick={logout}>
+            LogOut
           </div>
         </nav>
       </div>

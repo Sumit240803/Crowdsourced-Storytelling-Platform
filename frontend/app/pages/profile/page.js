@@ -2,14 +2,18 @@
 import Nav from '@/app/components/profile/Nav'
 import RecentStories from '@/app/components/RecentStories'
 import useAuth from '@/app/hooks/useAuth'
+import { getNotification } from '@/app/services/user'
 
 import React, { useEffect, useState } from 'react'
 
 const Profile = () => {
-    const showAlert = useAuth();
+  
+  const show = useAuth();
+  
+  
   return (
     <div className='text-white overflow-x-hidden'>
-        {showAlert? "Login To Acess this page " : <>
+        {show? "Login To Acess this page " : <>
           <div>
             <Nav/>
           </div>

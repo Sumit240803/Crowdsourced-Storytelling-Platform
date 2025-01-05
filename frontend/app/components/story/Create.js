@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 const Create = () => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState('');
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
@@ -14,7 +14,9 @@ const Create = () => {
   });
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
+    const token = localStorage.getItem('token');
+    console.log(token)
+    setToken(token);
   }, []);
 
   const handleChange = (e) => {
@@ -44,6 +46,7 @@ const Create = () => {
     };
 
     try {
+      console.log("Token from function" , token)
       const data = await createStory(
         dataToSend.title,
         dataToSend.synopsis,

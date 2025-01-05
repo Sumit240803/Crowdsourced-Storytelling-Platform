@@ -19,15 +19,16 @@ export const me = async (token) => {
 };
 
 
-export const createStory = async (title, synopsis, tags, collaborators, token) => {
+export const createStory = async (title, synopsis, tags, token) => {
     try {
+        console.log("token from create story ,", token);
         const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/story`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ title: title, synopsis: synopsis, tags: tags, collaborators: collaborators })
+            body: JSON.stringify({ title: title, synopsis: synopsis, tags: tags})
         });
         if (response.ok) {
             const data = await response.json();
@@ -40,7 +41,7 @@ export const createStory = async (title, synopsis, tags, collaborators, token) =
 
 export const invite = async (storyId, userIds, token) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/story`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/invite`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -174,4 +175,21 @@ export const uploadImage = async (token, file) => {
   
     }
   };
+
+
+export const getNotification=async(token)=>{
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/notification`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
   

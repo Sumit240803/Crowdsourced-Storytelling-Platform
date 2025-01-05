@@ -114,32 +114,46 @@ router.post("/story" , verifyJwt , async(req,res)=>{
 
 //Inviting Collaborators
 
-router.post("/invite" , verifyJwt , async(req,res)=>{
+router.post("/invite", verifyJwt, async (req, res) => {
     try {
-        const {storyId , userIds} = req.body;
-        const id = req.user.userId;
-        const user = await User.findById(id);
-        const story = await Story.findById(storyId).populate('author','username');
-        if(!story.author.equals(id)){
-            return res.status(404).json({"Message" : "error occured"});
+      const { storyId, userIds } = req.body;
+      const id = req.user.userId;
+      const user = await User.findById(id);
+      
+      // Check if the story exists
+      const story = await Story.findById(storyId).populate('author', 'username');
+      
+      if (!story) {
+        return res.status(404).json({ "Message": "Story not found." });
+      }
+      
+      if (!story.author.equals(id)) {
+        return res.status(403).json({ "Message": "You are not authorized to invite users to this story." });
+      }
+  
+      const notifications = [];
+      for (const userId of userIds) {
+        notifications.push({
+          message: `You have been invited by ${story.author.username} to collaborate on the story "${story.title}". Checkout your invite section to manage the invitations.`,
+          userId,
+        });
+  
+        // Check if the user already has the invite
+        if (!user.invites.includes(storyId)) {
+          await User.findByIdAndUpdate(userId, {
+            $addToSet: { invites: storyId },
+          }, { new: true });
         }
-        const notifications = [];
-        for(const userId of userIds){
-            notifications.push({
-                message: `You have been invited by ${story.author.username} to collaborate on the story "${story.title}. Checkout your invite section to manage the invitations."`,
-                userId,
-            });
-            await User.findByIdAndUpdate(userId , {
-                $addToSet : {invites : storyId}
-            },{new : true})
-        }
-        await Notification.insertMany(notifications);
-        return res.status(200).json({ "Message": "Invitations sent successfully" });
+      }
+  
+      await Notification.insertMany(notifications);
+      return res.status(200).json({ "Message": "Invitations sent successfully" });
     } catch (error) {
-        console.error("Error in /invite route:", error);
-        return res.status(500).json({ "Message": error.message });
+      console.error("Error in /invite route:", error);
+      return res.status(500).json({ "Message": error.message });
     }
-});
+  });
+  
 
 // Invitations
 
@@ -281,21 +295,26 @@ router.get("/find", verifyJwt, async (req, res) => {
     }
   });
   
-router.get("/notification" , verifyJwt , async(req,res)=>{
+  router.get("/notification", verifyJwt, async (req, res) => {
     try {
         const userId = req.user.userId;
 
-        // Fetch user and populate the referenced story fields
-        const notification = await Notification.findOne({userId : userId});
-        if(notification){
-            res.status(200).json({"Notification" : notification.message});
-        }else {
-            res.status(404).json({ message: "Notification not found" });
-          }
+        // Fetch notifications based on userId
+        const notifications = await Notification.find({ userId: userId });
+
+        // Check if notifications exist
+        if (notifications.length > 0) {
+            // Map to extract necessary data from notifications
+            const notificationMessages = notifications.map(notification => notification.message);
+            res.status(200).json({ "Notifications": notificationMessages });
+        } else {
+            res.status(404).json({ message: "Notifications not found", userId });
+        }
     } catch (error) {
-        res.status(500).json({ message: "Error finding Notification" });
+        console.error("Error finding notifications:", error);
+        res.status(500).json({ message: "Error finding notifications" });
     }
-})
+});
 
 
 module.exports = router;
