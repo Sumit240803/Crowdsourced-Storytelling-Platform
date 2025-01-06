@@ -48,7 +48,7 @@ const User = () => {
   }
 
   return (
-    <div>
+    <div className="bg-gradient-to-r from-[#f9f9f9] to-[#f4f4f4] min-h-screen">
       <Nav />
       {/* User Profile */}
       <div className="rounded-xl max-w-4xl mx-auto p-8 bg-gradient-to-r from-gray-800 via-gray-900 to-black shadow-xl mt-10 text-white relative">

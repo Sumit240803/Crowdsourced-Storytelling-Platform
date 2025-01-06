@@ -41,7 +41,7 @@ const Id = () => {
   }, [id]);
 
   return (
-    <div className="">
+    <div className="bg-gradient-to-r from-gray-100 to-gray-300 min-h-screen">
       <Nav />
       <div className="flex space-x-4 mb-4">
         <button

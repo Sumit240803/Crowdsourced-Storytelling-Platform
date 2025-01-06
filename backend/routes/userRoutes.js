@@ -188,7 +188,7 @@ router.post("/accept/:id" , verifyJwt , async(req,res)=>{
         const story = await Story.findById(id);
         if(story){
             story.collaborators.push(userId);
-            user.invites =  user.invites.filter(invite=>invite!==id);
+            user.invites =  user.invites.filter(invite=>invite.toString() !==id);
             const notification = [
                 {
                     message : `You have accepted the invitation for the story ${story.title}`,

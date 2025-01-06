@@ -1,6 +1,6 @@
 "use client";
 import Nav from '@/app/components/profile/Nav';
-import { getInvite } from '@/app/services/user';
+import { acceptInvite, getInvite, rejectInvite } from '@/app/services/user';
 import React, { useEffect, useState } from 'react';
 
 const Invitess = () => {
@@ -24,6 +24,36 @@ const Invitess = () => {
       console.error("Error fetching invites:", error);
     }
   };
+  const accept = async(id)=>{
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.log("No token found, please login.");
+            return;
+          }
+        const data = await acceptInvite(id , token);
+        if(data){
+            setInvites((prev)=>prev.filter((invite)=> invite._id !== id))
+        }
+    } catch (error) {
+        console.error("Error accepting invites:", error);
+    }
+  }
+  const reject = async(id)=>{
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.log("No token found, please login.");
+            return;
+          }
+        const data = await rejectInvite(id , token);
+        if(data){
+            setInvites((prev)=>prev.filter((invite)=> invite._id !== id))
+        }
+    } catch (error) {
+        console.error("Error accepting invites:", error);
+    }
+  }
 
   useEffect(() => {
     fetchInvites();
@@ -58,6 +88,10 @@ const Invitess = () => {
                       {tag}
                     </span>
                   ))}
+                </div>
+                <div className='space-x-3 text-black'>
+                <button onClick={()=>accept(invite._id)} className='text-green-500 font-bold bg-gray-50 rounded-lg p-1'>Accept</button>
+                <button onClick={()=>reject(invite._id)} className='text-red-500 font-bold bg-gray-50 rounded-lg p-1'>Reject</button>
                 </div>
               </div>
             ))}
