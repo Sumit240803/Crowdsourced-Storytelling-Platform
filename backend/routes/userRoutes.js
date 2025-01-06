@@ -156,22 +156,29 @@ router.post("/invite", verifyJwt, async (req, res) => {
   
 
 // Invitations
-
-router.get("/invites" , verifyJwt , async(req,res)=>{
+router.get("/invites", verifyJwt, async (req, res) => {
     try {
         const id = req.user.userId;
-        const user = await User.findById(id);
-        const invites = user.invites;
-        if(invites){
-            return res.status(200).json({"Message" : invites});
-        }else{
-            return res.status(404).json({"Message" : "No invites"});
+
+        // Fetch user with populated invites
+        const user = await User.findById(id).populate("invites");
+
+        if (!user) {
+            return res.status(404).json({ "Message": "User not found" });
+        }
+
+        const invites = user.invites || []; // Default to an empty array if no invites
+
+        if (invites.length > 0) {
+            return res.status(200).json({ "Message": invites });
+        } else {
+            return res.status(404).json({ "Message": "No invites found" });
         }
     } catch (error) {
-        console.error("Error in /invite route:", error);
-        return res.status(500).json({ "Message": error.message });
+        console.error("Error in /invites route:", error);
+        return res.status(500).json({ "Message": "An unexpected error occurred. Please try again." });
     }
-})
+});
 
 router.post("/accept/:id" , verifyJwt , async(req,res)=>{
     try {

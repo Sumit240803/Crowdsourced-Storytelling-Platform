@@ -73,7 +73,7 @@ const Id = () => {
           : null}
 
         {newChapters.map((chapter) => (
-          <div key={`new-${chapter.number}`} className="relative border p-4 rounded">
+          <div key={`new-${chapter.number}`} className="relative  p-4 rounded">
             <Chapter
               id={id} // Pass the story ID
               number={chapter.number}

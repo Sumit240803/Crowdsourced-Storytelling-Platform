@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 const Create = () => {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
@@ -14,8 +14,7 @@ const Create = () => {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log(token)
+    const token = localStorage.getItem("token");
     setToken(token);
   }, []);
 
@@ -23,7 +22,6 @@ const Create = () => {
     const { name, value } = e.target;
 
     if (name === "tags" || name === "collaborators") {
-      // Update tags or collaborators as arrays, splitting by commas
       setFormData({
         ...formData,
         [name]: value ? value.split(",").map((item) => item.trim()) : [],
@@ -39,34 +37,34 @@ const Create = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Ensure tags and collaborators are empty arrays if no valid input
     const dataToSend = {
       ...formData,
-      tags: formData.tags.filter((tag) => tag) // Remove empty strings
+      tags: formData.tags.filter((tag) => tag),
     };
 
     try {
-      console.log("Token from function" , token)
       const data = await createStory(
         dataToSend.title,
         dataToSend.synopsis,
         dataToSend.tags,
         token
       );
-      if(data){
-        router.replace(`/pages/write/${data.id}`)
+      if (data) {
+        router.replace(`/pages/write/${data.id}`);
       }
-      console.log("Response Data:", data);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
   return (
-    <div className="max-w-lg text-sm mx-auto p-4 font-amaranth text-white rounded-xl">
+    <div className="max-w-lg mx-auto p-6 bg-gray-800 text-white rounded-xl shadow-md font-amaranth sm:p-8">
+      <h1 className="text-2xl font-bold mb-6 text-center text-orange-500">
+        Create a New Story
+      </h1>
       <form onSubmit={handleSubmit}>
         {/* Title */}
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="title" className="block text-lg font-medium mb-2">
             Title
           </label>
@@ -82,7 +80,7 @@ const Create = () => {
         </div>
 
         {/* Synopsis */}
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="synopsis" className="block text-lg font-medium mb-2">
             Synopsis
           </label>
@@ -98,7 +96,7 @@ const Create = () => {
         </div>
 
         {/* Tags */}
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="tags" className="block text-lg font-medium mb-2">
             Tags
           </label>
@@ -112,12 +110,10 @@ const Create = () => {
           />
         </div>
 
-        
-
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full p-3 bg-orange-500 text-white rounded-md hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
+          className="w-full py-3 bg-orange-500 text-white text-lg rounded-md hover:bg-orange-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-600"
         >
           Create
         </button>

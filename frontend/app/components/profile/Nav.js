@@ -5,14 +5,14 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { CiUser } from "react-icons/ci";
-import { getNotification, markNotificationsAsRead } from '@/app/services/user'; // Include the mark as read service
+import { getInvite, getNotification, markNotificationsAsRead } from '@/app/services/user'; // Include the mark as read service
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
-
+  const [invites , setInvites] = useState([]);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -45,6 +45,26 @@ const Nav = () => {
       console.error("Error fetching notifications:", error);
     }
   };
+  const fetchInvites =async()=>{
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.log("No token found, please login.");
+        return;
+      }
+
+      const data = await getInvite(token);
+      if(data){
+
+        console.log(invites);
+        setInvites(data);
+        console.log('invitation Data:', data);
+      }
+    } catch (error) {
+      console.error("Error fetching invites:", error);
+    }
+  }
 
   const markAsRead = async () => {
     try {
@@ -67,6 +87,7 @@ const Nav = () => {
 
   useEffect(() => {
     fetchNotifications();
+    fetchInvites();
   }, []);
 
   return (
@@ -129,6 +150,11 @@ const Nav = () => {
           <Link className="text-lg text-yellow-600 hover:text-yellow-400" href="/pages/stories">
             My Stories
           </Link>
+          <Link className="relative text-lg text-yellow-600 hover:text-yellow-400" href="/pages/invites">
+            Story Invites
+            <span className='absolute w-2 rounded-full h-2 bg-orange-100 border-2 border-black top-1'></span>
+          </Link>
+          
           <div className="text-lg text-yellow-600 hover:text-yellow-400 cursor-pointer" onClick={logout}>
             LogOut
           </div>
