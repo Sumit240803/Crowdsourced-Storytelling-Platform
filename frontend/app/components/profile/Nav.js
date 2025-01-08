@@ -54,7 +54,7 @@ const Nav = () => {
     <div className="relative font-amaranth bg-gradient-to-r from-blue-900 via-purple-900 to-black p-4 rounded-lg shadow-lg m-3">
       {/* Top Bar */}
       <div className="flex items-center justify-between px-6 py-3">
-        <Link href="/pages/profile" className="text-3xl font-bold text-yellow-400 hover:text-yellow-300">
+        <Link href="/pages/profile" className="text-3xl font-bold text-purple-100 hover:text-purple-300">
           Narrato
         </Link>
         <div className="flex items-center space-x-4">
@@ -97,27 +97,27 @@ const Nav = () => {
 
       {/* Side Navigation */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 transition-transform transform ${
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 rounded-lg bg-opacity-30 transition-transform transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:relative md:flex md:w-auto`}
       >
         <nav className="flex flex-col px-6 py-8 space-y-6 md:flex-row md:space-y-0 md:space-x-6">
-          <Link className="text-lg text-yellow-400 hover:text-yellow-300 flex items-center" href="/pages/user">
+          <Link className="text-lg text-purple-200 hover:text-purple-300 flex items-center" href="/pages/user">
             <CiUser className="mr-2" size={20} /> Profile
           </Link>
-          <Link className="text-lg text-yellow-400 hover:text-yellow-300" href="/pages/write">
+          <Link className="text-lg text-purple-200 hover:text-purple-300" href="/pages/write">
             Write Story
           </Link>
-          <Link className="text-lg text-yellow-400 hover:text-yellow-300" href="/pages/stories">
+          <Link className="text-lg text-purple-200 hover:text-purple-300" href="/pages/stories">
             My Stories
           </Link>
-          <Link className="relative text-lg text-yellow-400 hover:text-yellow-300" href="/pages/invites">
+          <Link className="relative text-lg text-purple-200 hover:text-purple-300" href="/pages/invites">
             Story Invites
             {invites.length > 0 && (
               <span className="absolute top-1 left-1 w-3 h-3 bg-red-600 rounded-full"></span>
             )}
           </Link>
-          <div className="text-lg text-yellow-400 hover:text-yellow-300 cursor-pointer" onClick={logout}>
+          <div className="text-lg text-purple-200 hover:text-purple-300 cursor-pointer" onClick={logout}>
             LogOut
           </div>
         </nav>
