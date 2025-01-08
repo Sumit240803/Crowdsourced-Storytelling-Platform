@@ -58,14 +58,17 @@ const Create = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-gray-800 text-white rounded-xl shadow-md font-amaranth sm:p-8">
-      <h1 className="text-2xl font-bold mb-6 text-center text-orange-500">
+    <div className="max-w-5xl mx-auto p-6 bg-gray-950 rounded-xl shadow-xl shadow-purple-800 font-amaranth sm:p-8">
+      <h1 className="text-2xl font-bold mb-6 text-center text-purple-500">
         Create a New Story
       </h1>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-wrap items-start gap-6 md:gap-8"
+      >
         {/* Title */}
-        <div className="mb-6">
-          <label htmlFor="title" className="block text-lg font-medium mb-2">
+        <div className="flex items-center space-x-4 w-full md:w-auto">
+          <label htmlFor="title" className="text-lg font-medium text-fuchsia-300">
             Title
           </label>
           <input
@@ -74,14 +77,17 @@ const Create = () => {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className="w-full p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-500 w-60"
             required
           />
         </div>
-
+  
         {/* Synopsis */}
-        <div className="mb-6">
-          <label htmlFor="synopsis" className="block text-lg font-medium mb-2">
+        <div className="flex items-center space-x-4 w-full md:w-auto">
+          <label
+            htmlFor="synopsis"
+            className="text-lg font-medium text-fuchsia-300"
+          >
             Synopsis
           </label>
           <textarea
@@ -89,15 +95,15 @@ const Create = () => {
             name="synopsis"
             value={formData.synopsis}
             onChange={handleChange}
-            rows="4"
-            className="w-full p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            rows="1"
+            className="p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-500 w-60"
             required
           />
         </div>
-
+  
         {/* Tags */}
-        <div className="mb-6">
-          <label htmlFor="tags" className="block text-lg font-medium mb-2">
+        <div className="flex items-center space-x-4 w-full md:w-auto">
+          <label htmlFor="tags" className="text-lg font-medium text-fuchsia-300">
             Tags
           </label>
           <input
@@ -105,21 +111,24 @@ const Create = () => {
             id="tags"
             name="tags"
             onChange={handleChange}
-            className="w-full p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="p-3 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-500 w-60"
             placeholder="e.g. Horror, Romantic"
           />
         </div>
-
+  
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full py-3 bg-orange-500 text-white text-lg rounded-md hover:bg-orange-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-600"
-        >
-          Create
-        </button>
+        <div className="flex items-center space-x-4 w-full md:w-auto">
+          <button
+            type="submit"
+            className="py-3 px-6 bg-fuchsia-900 text-fuchsia-300 text-lg rounded-md hover:bg-fuchsia-400 hover:text-fuchsia-900 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+          >
+            Create
+          </button>
+        </div>
       </form>
     </div>
   );
+  
 };
 
 export default Create;

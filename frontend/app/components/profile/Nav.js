@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { CiUser } from "react-icons/ci";
-import { getInvite, getNotification, markNotificationsAsRead } from '@/app/services/user'; 
+import { getInvite, getNotification, markNotificationsAsRead } from '@/app/services/user';
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +80,7 @@ const Nav = () => {
 
       {/* Notifications Dropdown */}
       {notificationOpen && (
-        <div className="absolute right-6 top-16 w-72 bg-gray-800 text-yellow-300 rounded-lg shadow-lg">
+        <div className="absolute right-6 top-16 w-72 bg-gray-800 text-yellow-300 rounded-lg shadow-lg z-50">
           <ul className="py-2">
             {notifications.length > 0 ? (
               notifications.map((notification, index) => (
@@ -97,8 +97,8 @@ const Nav = () => {
 
       {/* Side Navigation */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 rounded-lg bg-opacity-30 transition-transform transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-900    z-40 transition-transform transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full bg-opacity-35 rounded-lg"
         } md:translate-x-0 md:relative md:flex md:w-auto`}
       >
         <nav className="flex flex-col px-6 py-8 space-y-6 md:flex-row md:space-y-0 md:space-x-6">
@@ -126,7 +126,7 @@ const Nav = () => {
       {/* Mobile Menu Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 md:hidden"
+          className="fixed inset-0 bg-black opacity-50 z-30 md:hidden"
           onClick={toggleMenu}
         ></div>
       )}
