@@ -72,7 +72,7 @@ const Id = () => {
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
     {collaborators.length > 0 &&
       collaborators.map((collaborator) => (
-        <div
+        <Link href={`/pages/${collaborator._id}`}
           key={collaborator._id}
           className="flex items-center space-x-4 p-2 bg-white shadow-md rounded-lg"
         >
@@ -86,7 +86,7 @@ const Id = () => {
           <span className="text-orange-600 font-medium">
             {collaborator.username}
           </span>
-        </div>
+        </Link>
       ))}
   </div>
 </div>

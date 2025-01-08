@@ -204,4 +204,17 @@ export const markNotificationsAsRead = async (token) => {
     return response;
   };
   
-  
+
+export const getUser = async(id ,token)=>{
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/user?id=${encodeURIComponent(id)}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
+      if(response.ok){
+        const data = await response.json();
+        return data;
+      }
+      
+}

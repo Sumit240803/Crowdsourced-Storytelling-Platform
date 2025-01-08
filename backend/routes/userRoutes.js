@@ -346,5 +346,16 @@ router.put("/mark-as-read", verifyJwt, async (req, res) => {
     }
 });
 
+router.get("/user" , verifyJwt , async(req,res)=>{
+    try {
+        const {id} = req.query;
+        const user = await User.findById(id);
+        if(user){
+            return res.status(200).json({"user" : user});
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Error" });
+    }
+})
 
 module.exports = router;
