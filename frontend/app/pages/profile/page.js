@@ -12,7 +12,7 @@ const Profile = () => {
   
   
   return (
-    <div className='text-white overflow-x-hidden'>
+    <div className='text-white overflow-x-hidden bg-gradient-to-r from-[#f9f9f9] to-[#f4f4f4] min-h-screen'>
         {show? "Login To Acess this page " : <>
           <div>
             <Nav/>

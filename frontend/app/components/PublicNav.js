@@ -15,7 +15,7 @@ const PublicNav = () => {
   }, [isAuth]);
 
   return (
-    <div className="items-center font-amaranth bg-gradient-to-r from-[#0e1a2b] via-[#251a31] to-[#4a2305] flex justify-between px-10 py-4 sm:px-1 md:px-2 xl:px-10 border-b border-gray-800">
+    <div className="items-center font-amaranth bg-gradient-to-r from-blue-900 via-purple-900 to-black p-4 rounded-lg shadow-lg m-3 flex justify-between px-10 py-4 sm:px-1 md:px-2 xl:px-10 border-b border-gray-800">
       <div className="text-2xl sm:text-2xl md:text-3xl xl:text-4xl text-orange-600">
         Narrato
       </div>

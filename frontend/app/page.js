@@ -6,7 +6,7 @@ import RecentStories from "./components/RecentStories";
 
 export default function Home() {
   return (
-    <div className="bg-gray-950">
+    <div className="bg-gradient-to-r from-[#f9f9f9] to-[#f4f4f4] min-h-screen">
       <PublicNav/>
       <RecentStories/>
       <Footer/>
