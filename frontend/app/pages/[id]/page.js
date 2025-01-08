@@ -12,7 +12,16 @@ import { TiGroupOutline } from 'react-icons/ti';
 const UserId = () => {
     const {id} = useParams();
     
-    const [user , setUser] = useState(null);
+    const [user, setUser] = useState({
+      username: '',
+      email: '',
+      profilePicture: '',
+      storiesCreated: [],
+      storiesParticipated: [],
+      followers: [],
+      following: [],
+    });
+    
     const myUser = async(token)=>{
         const data = await getUser(id,token);
         if(data){
@@ -23,10 +32,13 @@ const UserId = () => {
           console.log("Error")
         }
     }
-    useEffect(()=>{
-      const token = localStorage.getItem("token");
-      myUser(token);
-    },[id])
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token');
+        myUser(token);
+      }
+    }, [id]);
+    
     return (
         <div className="bg-gradient-to-r from-[#f9f9f9] to-[#f4f4f4] min-h-screen">
           <Nav />
@@ -34,7 +46,7 @@ const UserId = () => {
           <div className="rounded-xl max-w-4xl mx-auto p-8 bg-gradient-to-r from-gray-800 via-gray-900 to-black shadow-xl mt-10 text-white relative">
             <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
               <div className="relative">
-                {/*user.profilePicture ? (
+                {user.profilePicture ? (
                   <Image
                     src={user.profilePicture}
                     alt="Profile"
@@ -46,7 +58,7 @@ const UserId = () => {
                   <div className="w-32 h-32 rounded-full border-4 border-orange-500 bg-gray-700 flex items-center justify-center text-2xl">
                     No Image
                   </div>
-                )*/}
+                )}
                 
                 
               </div>

@@ -346,16 +346,16 @@ router.put("/mark-as-read", verifyJwt, async (req, res) => {
     }
 });
 
-router.get("/user" , verifyJwt , async(req,res)=>{
+router.get('/user', verifyJwt, async (req, res) => {
     try {
-        const {id} = req.query;
-        const user = await User.findById(id);
-        if(user){
-            return res.status(200).json({"user" : user});
-        }
+      const { id } = req.query;
+      if (!id) return res.status(400).json({ message: 'ID is required' });
+      const user = await User.findById(id);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+      res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ message: "Error" });
+      res.status(500).json({ message: 'Error fetching user', error: error.message });
     }
-})
-
+  });
+  
 module.exports = router;
