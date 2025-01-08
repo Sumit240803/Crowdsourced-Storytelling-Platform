@@ -199,6 +199,7 @@ router.post("/accept/:id" , verifyJwt , async(req,res)=>{
                     userId : story.author
                 }
             ];
+            user.storiesParticipated.push(story._id);
             await Notification.insertMany(notification);
             await user.save();
             await story.save();
@@ -324,7 +325,7 @@ router.get("/find", verifyJwt, async (req, res) => {
 });
 
 
-router.put("/notification/mark-as-read", verifyJwt, async (req, res) => {
+router.put("/mark-as-read", verifyJwt, async (req, res) => {
     try {
         const userId = req.user.userId;
 

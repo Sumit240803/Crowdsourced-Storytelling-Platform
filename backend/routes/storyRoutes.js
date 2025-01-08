@@ -115,5 +115,20 @@ router.get("/stories", async (req, res) => {
 });
 
 
+router.get("/collaborators" , verifyJwt , async(req,res)=>{
+  try {
+    const {id} = req.query;
+    const story = await Story.findById(id).populate("collaborators");
+    if(story){
+      const collaborators = story.collaborators;
+     return res.status(200).json({"collaborators" : collaborators});
+    }
+   return res.status(404).json({"Message" : "Story Not found"});
+  } catch (error) {
+    console.error(error);
+        res.status(500).json({ message: "Error fetching collaborators" });
+  }
+})
+
 
 module.exports = router;

@@ -1,7 +1,8 @@
 "use client";
 import Nav from "@/app/components/profile/Nav";
 import Chapter from "@/app/components/write/Chapter";
-import { getStory } from "@/app/services/story";
+import { getCollab, getStory } from "@/app/services/story";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ const Id = () => {
   const [chapters, setChapters] = useState([]);
   const [newChapters, setNewChapters] = useState([]);
   const [token, setToken] = useState("");
+  const [collaborators , setCollaborators] = useState([]);
 
   // Add a new chapter
   const handleNewChapter = () => {
@@ -26,6 +28,14 @@ const Id = () => {
   const handleRemoveChapter = (number) => {
     setNewChapters((prev) => prev.filter((chapter) => chapter.number !== number));
   };
+  const collab = async()=>{
+    const token = localStorage.getItem("token");
+    const data = await getCollab(token , id);
+    if(data){
+      setCollaborators(data.collaborators);
+    }
+    //console.log(data);
+  }
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -38,12 +48,13 @@ const Id = () => {
       console.log(data);
     };
     content();
+    collab();
   }, [id]);
 
   return (
     <div className="bg-gradient-to-r from-gray-100 to-gray-300 min-h-screen">
       <Nav />
-      <div className="flex space-x-4 mb-4">
+      <div className="flex space-x-4 mb-4 items-center">
         <button
           onClick={handleNewChapter}
           className="px-4 py-2 bg-orange-600 m-2 text-white rounded"
@@ -56,6 +67,32 @@ const Id = () => {
         >
           Invite Collaborators
         </Link>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div className="w-full overflow-x-auto">
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+    {collaborators.length > 0 &&
+      collaborators.map((collaborator) => (
+        <div
+          key={collaborator._id}
+          className="flex items-center space-x-4 p-2 bg-white shadow-md rounded-lg"
+        >
+          <Image
+            src={collaborator.profilePicture}
+            width={50}
+            height={50}
+            alt="Collaborator Image"
+            className="rounded-full"
+          />
+          <span className="text-orange-600 font-medium">
+            {collaborator.username}
+          </span>
+        </div>
+      ))}
+  </div>
+</div>
+
+</div>
+
       </div>
 
       <div className="space-y-4 m-2">

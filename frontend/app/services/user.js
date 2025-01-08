@@ -194,7 +194,7 @@ export const getNotification=async(token)=>{
 }
 
 export const markNotificationsAsRead = async (token) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/notification/mark-as-read`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/mark-as-read`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,

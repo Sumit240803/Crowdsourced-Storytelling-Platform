@@ -71,3 +71,19 @@ export const getStories = async(token , page,limit)=>{
         console.log(error);
     }
 }
+
+export const getCollab = async(token , id)=>{
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/story/collaborators?id=${encodeURIComponent(id)}`,{
+            headers :{
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+    if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}

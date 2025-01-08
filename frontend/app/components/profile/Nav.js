@@ -58,7 +58,7 @@ const Nav = () => {
       if(data){
 
         console.log(invites);
-        setInvites(data);
+        setInvites(data.Message);
         console.log('invitation Data:', data);
       }
     } catch (error) {
@@ -152,7 +152,9 @@ const Nav = () => {
           </Link>
           <Link className="relative text-lg text-yellow-600 hover:text-yellow-400" href="/pages/invites">
             Story Invites
+            {invites.length > 0 ?
             <span className='absolute w-2 rounded-full h-2 bg-orange-100 border-2 border-black top-1'></span>
+            : ""}
           </Link>
           
           <div className="text-lg text-yellow-600 hover:text-yellow-400 cursor-pointer" onClick={logout}>
