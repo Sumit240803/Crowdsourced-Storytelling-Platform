@@ -57,13 +57,13 @@ const Id = () => {
       <div className="flex space-x-4 mb-4 items-center">
         <button
           onClick={handleNewChapter}
-          className="px-4 py-2 bg-orange-600 m-2 text-white rounded"
+          className="px-4 py-2 bg-purple-600 m-2 text-white rounded"
         >
           Add Chapter
         </button>
         <Link
           href={`/pages/stories/${id}/invite`}
-          className="px-4 py-2 bg-orange-600 m-2 text-white rounded"
+          className="px-4 py-2 bg-purple-600 m-2 text-white rounded"
         >
           Invite Collaborators
         </Link>
@@ -74,7 +74,7 @@ const Id = () => {
       collaborators.map((collaborator) => (
         <Link href={`/pages/${collaborator._id}`}
           key={collaborator._id}
-          className="flex items-center space-x-4 p-2 bg-white shadow-md rounded-lg"
+          className="flex items-center space-x-4 p-2 bg-purple-50 shadow-md rounded-lg"
         >
           <Image
             src={collaborator.profilePicture}
@@ -83,7 +83,7 @@ const Id = () => {
             alt="Collaborator Image"
             className="rounded-full"
           />
-          <span className="text-orange-600 font-medium">
+          <span className="text-purple-900 font-medium">
             {collaborator.username}
           </span>
         </Link>

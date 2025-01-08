@@ -51,8 +51,8 @@ const User = () => {
     <div className="bg-gradient-to-r from-[#f9f9f9] to-[#f4f4f4] min-h-screen">
       <Nav />
       {/* User Profile */}
-      <div className="rounded-xl max-w-4xl mx-auto p-8 bg-gradient-to-r from-gray-800 via-gray-900 to-black shadow-xl mt-10 text-white relative">
-        <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+      <div className="rounded-xl max-w-4xl mx-auto p-8 bg-gradient-to-r from-gray-800 via-gray-900 to-black shadow-2xl shadow-purple-800 mt-10 text-white relative">
+        <div className="flex flex-col md:flex-row items-center space-y-6 shadow-2xl md:space-y-0 md:space-x-8">
           <div className="relative">
             {user.profilePicture ? (
               <Image
@@ -60,16 +60,16 @@ const User = () => {
                 alt="Profile"
                 width={100}
                 height={100}
-                className="w-32 h-32 rounded-full border-4 border-orange-500 shadow-lg"
+                className="w-32 h-32 rounded-full border-4 border-purple-500 shadow-lg"
               />
             ) : (
-              <div className="w-32 h-32 rounded-full border-4 border-orange-500 bg-gray-700 flex items-center justify-center text-2xl">
+              <div className="w-32 h-32 rounded-full border-4 border-purple-500 bg-gray-700 flex items-center justify-center text-2xl">
                 No Image
               </div>
             )}
             <div
               onClick={handleImageClick}
-              className="absolute bottom-0 right-0 bg-orange-500 hover:bg-orange-400 text-white rounded-full w-10 h-10 flex items-center justify-center cursor-pointer shadow-md"
+              className="absolute bottom-0 right-0 bg-black hover:bg-black text-white rounded-full w-10 h-10 flex items-center justify-center cursor-pointer shadow-md"
             >
               +
             </div>
@@ -91,7 +91,7 @@ const User = () => {
       </div>
 
       {/* User Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto p-6 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-xl shadow-xl text-white">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto p-6 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-xl text-white">
         <StatCard
           icon={<SiStorybook className="text-4xl text-yellow-400" />}
           label="Stories Written"
@@ -118,7 +118,7 @@ const User = () => {
 };
 
 const StatCard = ({ icon, label, value }) => (
-  <div className="flex flex-col items-center bg-gray-900 p-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300">
+  <div className="flex flex-col items-center bg-gray-900 p-4 rounded-lg shadow-sm  hover:shadow-purple-300 transform hover:scale-105 transition duration-300">
     {icon}
     <p className="mt-2 text-lg text-gray-300">{label}</p>
     <p className="text-2xl font-bold mt-1">{value}</p>

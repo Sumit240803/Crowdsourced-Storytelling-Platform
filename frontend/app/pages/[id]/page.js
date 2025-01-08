@@ -74,10 +74,10 @@ const UserId = () => {
                 alt="Profile"
                 width={100}
                 height={100}
-                className="w-32 h-32 rounded-full border-4 border-orange-500 shadow-lg"
+                className="w-32 h-32 rounded-full border-4 border-purple-500 shadow-lg"
               />
             ) : (
-              <div className="w-32 h-32 rounded-full border-4 border-orange-500 bg-gray-700 flex items-center justify-center text-2xl">
+              <div className="w-32 h-32 rounded-full border-4 border-purple-500 bg-gray-700 flex items-center justify-center text-2xl">
                 No Image
               </div>
             )}
@@ -86,15 +86,19 @@ const UserId = () => {
             <h1 className="text-3xl font-bold font-amaranth">{user.username || "N/A"}</h1>
             <button
               className={`mt-4 px-6 py-2 rounded-lg text-lg font-medium ${
-                isFollowing ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
+                isFollowing ? 'bg-red-500 hover:bg-red-600' : 'bg-purple-500 hover:bg-purple-600'
               } text-white transition duration-300`}
               onClick={handleFollow}
             >
               {isFollowing ? 'Unfollow' : 'Follow'}
             </button>
             <p className="flex items-center justify-center md:justify-start text-lg mt-2 text-gray-300">
-              <MdOutlineEmail className="mr-2" /> {user.email || "N/A"}
-            </p>
+  <MdOutlineEmail className="mr-2" />
+  <a href={`mailto:${user.email}`} className="hover:text-blue-500">
+    {user.email || "N/A"}
+  </a>
+</p>
+
           </div>
         </div>
       </div>

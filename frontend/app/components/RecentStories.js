@@ -17,7 +17,7 @@ const RecentStories = () => {
             <div className='font-comic text-lg my-1 bg-gray-600 rounded-xl p-2 border-2 border-gray-800'>
             Detective Evelyn Hart, a sharp but haunted investigator, is called to unravel the mystery. With each new victim, Evelyn is drawn deeper into a labyrinth of secrets, where every clue leads her closer to a horrifying revelation........
             </div>
-            <Link href={"/"}  className='text-green-200 underline hover:text-green-400 cursor-pointer'>Read More</Link>
+            <Link href={"/"}  className='text-blue-200 underline hover:text-purple-400 cursor-pointer'>Read More</Link>
         </div>
     </div>
   )
