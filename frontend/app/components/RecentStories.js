@@ -3,7 +3,7 @@ import React from 'react'
 
 const RecentStories = () => {
   return (
-    <div className='bg-[url("/bg-1.jpg")] w-11/12 m-auto my-3 min-h-screen  p-1 rounded-xl border-2 border-gray-800'>
+    <div className=' w-11/12 m-auto my-3 min-h-screen  p-1 rounded-xl '>
         <div className='text-center bg-gray-900 shadow-md rounded p-3 shadow-purple-900 w-11/12 m-auto my-3 h-auto  '>
             <div className='text-3xl font-anton my-3'>
             The Night Killer

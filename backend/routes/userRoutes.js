@@ -358,4 +358,115 @@ router.get('/user', verifyJwt, async (req, res) => {
     }
   });
   
+
+// Follow a user
+router.post("/follow/:id", verifyJwt, async (req, res) => {
+    try {
+        const currentUserId = req.user.id; // Extract current user's ID from the token
+        const targetUserId = req.params.id; // The ID of the user to follow
+
+        if (currentUserId === targetUserId) {
+            return res.status(400).json({ message: "You cannot follow yourself." });
+        }
+
+        const currentUser = await User.findById(currentUserId);
+        const targetUser = await User.findById(targetUserId);
+
+        if (!targetUser) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        if (currentUser.following.includes(targetUserId)) {
+            return res.status(400).json({ message: "You already follow this user." });
+        }
+
+        currentUser.following.push(targetUserId);
+        targetUser.followers.push(currentUserId);
+
+        await currentUser.save();
+        await targetUser.save();
+
+        res.status(200).json({ message: "User followed successfully." });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred.", error });
+    }
+});
+
+// Unfollow a user
+router.post("/unfollow/:id", verifyJwt, async (req, res) => {
+    try {
+        const currentUserId = req.user.id; // Extract current user's ID from the token
+        const targetUserId = req.params.id; // The ID of the user to unfollow
+
+        if (currentUserId === targetUserId) {
+            return res.status(400).json({ message: "You cannot unfollow yourself." });
+        }
+
+        const currentUser = await User.findById(currentUserId);
+        const targetUser = await User.findById(targetUserId);
+
+        if (!targetUser) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        if (!currentUser.following.includes(targetUserId)) {
+            return res.status(400).json({ message: "You do not follow this user." });
+        }
+
+        currentUser.following = currentUser.following.filter(
+            (userId) => userId.toString() !== targetUserId
+        );
+        targetUser.followers = targetUser.followers.filter(
+            (userId) => userId.toString() !== currentUserId
+        );
+
+        await currentUser.save();
+        await targetUser.save();
+
+        res.status(200).json({ message: "User unfollowed successfully." });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred.", error });
+    }
+});
+
+
+// Get followers of a user
+router.get("/followers/:id", verifyJwt, async (req, res) => {
+    try {
+        const targetUserId = req.params.id;
+
+        const targetUser = await User.findById(targetUserId).populate("followers", "username email");
+        if (!targetUser) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        res.status(200).json({
+            message: "Followers retrieved successfully.",
+            followers: targetUser.followers,
+        });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred.", error });
+    }
+});
+
+// Get following of a user
+router.get("/following/:id", verifyJwt, async (req, res) => {
+    try {
+        const targetUserId = req.params.id;
+
+        const targetUser = await User.findById(targetUserId).populate("following", "username email");
+        if (!targetUser) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        res.status(200).json({
+            message: "Following retrieved successfully.",
+            following: targetUser.following,
+        });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred.", error });
+    }
+});
+
+
 module.exports = router;

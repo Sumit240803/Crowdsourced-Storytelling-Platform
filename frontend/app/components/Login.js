@@ -55,7 +55,7 @@ const Login = () => {
     <div>
       <button
         onClick={toggleModal}
-        className="rounded-md px-4 py-2 text-green-200"
+        className="rounded-md px-4 py-2 text-purple-100"
       >
         Login
       </button>
