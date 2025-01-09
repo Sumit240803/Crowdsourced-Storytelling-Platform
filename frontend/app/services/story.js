@@ -56,13 +56,9 @@ export const getStory = async(token , id)=>{
     }
 }
 
-export const getStories = async(token , page,limit)=>{
+export const getStories = async(page,limit)=>{
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/story/getStories/page=${page}&limit=${limit}`, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/story/stories?page=${page}&limit=${limit}`);
         if (response.ok) {
             const data = await response.json();
             return data;
@@ -70,6 +66,7 @@ export const getStories = async(token , page,limit)=>{
     } catch (error) {
         console.log(error);
     }
+
 }
 
 export const getCollab = async(token , id)=>{
