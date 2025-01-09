@@ -223,7 +223,7 @@ export const markNotificationsAsRead = async (token) => {
   // Follow a user
   export const followUser = async (userId, token) => {
       try {
-          const response = await fetch(`${ process.env.NEXT_PUBLIC_API_URL}/api/user/follow/${userId}`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/follow/${userId}`, {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -246,7 +246,7 @@ export const markNotificationsAsRead = async (token) => {
   // Unfollow a user
   export const unfollowUser = async (userId, token) => {
       try {
-          const response = await fetch(`${ process.env.NEXT_PUBLIC_API_URL}/api/user/unfollow/${userId}`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/unfollow/${userId}`, {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -269,29 +269,30 @@ export const markNotificationsAsRead = async (token) => {
   // Get followers of a user
   export const getFollowers = async (userId, token) => {
       try {
-          const response = await fetch(`${ process.env.NEXT_PUBLIC_API_URL}/api/user/followers/${userId}`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/followers/${userId}`, {
               method: "GET",
               headers: {
-                  Authorization: `Bearer ${token}`,
+                  'Authorization': `Bearer ${token}`,
               },
           });
   
           if (!response.ok) {
-              const errorData = await response.json();
-              throw new Error(errorData.message || "Failed to fetch followers.");
+              /*const errorData = await response.json();
+              throw new Error(errorData.message || "Failed to fetch followers.");*/
+              console.log("Error")
           }
   
           return await response.json();
       } catch (error) {
-          console.error("Error fetching followers:", error.message);
-          throw error;
+          /*console.error("Error fetching followers:", error.message);
+          throw error;*/
       }
   };
   
   // Get following of a user
   export const getFollowing = async (userId, token) => {
       try {
-          const response = await fetch(`${ process.env.NEXT_PUBLIC_API_URL}/api/user/following/${userId}`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user/following/${userId}`, {
               method: "GET",
               headers: {
                   Authorization: `Bearer ${token}`,
@@ -305,8 +306,8 @@ export const markNotificationsAsRead = async (token) => {
   
           return await response.json();
       } catch (error) {
-          console.error("Error fetching following:", error.message);
-          throw error;
+         /* console.error("Error fetching following:", error.message);
+          throw error;*/
       }
   };
   

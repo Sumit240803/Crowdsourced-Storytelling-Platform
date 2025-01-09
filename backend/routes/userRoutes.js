@@ -362,40 +362,50 @@ router.get('/user', verifyJwt, async (req, res) => {
 // Follow a user
 router.post("/follow/:id", verifyJwt, async (req, res) => {
     try {
-        const currentUserId = req.user.id; // Extract current user's ID from the token
+        const currentUserId = req.user.userId; // Extract current user's ID from the token
         const targetUserId = req.params.id; // The ID of the user to follow
 
         if (currentUserId === targetUserId) {
             return res.status(400).json({ message: "You cannot follow yourself." });
         }
 
+        // Fetch users
         const currentUser = await User.findById(currentUserId);
         const targetUser = await User.findById(targetUserId);
 
+        // Check if both users exist
+        if (!currentUser) {
+            return res.status(404).json({ message: "Current user not found." });
+        }
         if (!targetUser) {
-            return res.status(404).json({ message: "User not found." });
+            return res.status(404).json({ message: "Target user not found." });
         }
 
+        // Check if already following
         if (currentUser.following.includes(targetUserId)) {
             return res.status(400).json({ message: "You already follow this user." });
         }
 
+        // Add the follow relationship
         currentUser.following.push(targetUserId);
         targetUser.followers.push(currentUserId);
 
+        // Save the updates
         await currentUser.save();
         await targetUser.save();
 
         res.status(200).json({ message: "User followed successfully." });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: "An error occurred.", error });
     }
 });
 
+
 // Unfollow a user
 router.post("/unfollow/:id", verifyJwt, async (req, res) => {
     try {
-        const currentUserId = req.user.id; // Extract current user's ID from the token
+        const currentUserId = req.user.userId; // Extract current user's ID from the token
         const targetUserId = req.params.id; // The ID of the user to unfollow
 
         if (currentUserId === targetUserId) {
@@ -435,7 +445,7 @@ router.get("/followers/:id", verifyJwt, async (req, res) => {
     try {
         const targetUserId = req.params.id;
 
-        const targetUser = await User.findById(targetUserId).populate("followers", "username email");
+        const targetUser = await User.findById(targetUserId).populate("followers", "username email profilePicture");
         if (!targetUser) {
             return res.status(404).json({ message: "User not found." });
         }
@@ -454,7 +464,7 @@ router.get("/following/:id", verifyJwt, async (req, res) => {
     try {
         const targetUserId = req.params.id;
 
-        const targetUser = await User.findById(targetUserId).populate("following", "username email");
+        const targetUser = await User.findById(targetUserId).populate("following", "username email profilePicture");
         if (!targetUser) {
             return res.status(404).json({ message: "User not found." });
         }

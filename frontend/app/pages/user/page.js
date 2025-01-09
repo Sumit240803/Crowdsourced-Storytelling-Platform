@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { me, uploadImage } from "@/app/services/user";
+import { me, uploadImage, getFollowers, getFollowing } from "@/app/services/user"; // Ensure these functions are imported
 import useAuth from "@/app/hooks/useAuth";
 import Image from "next/image";
 import Nav from "@/app/components/profile/Nav";
@@ -14,6 +14,9 @@ const User = () => {
   const token = localStorage.getItem("token");
   const [user, setUser] = useState(null);
   const fileInputRef = useRef(null);
+  const [modalData, setModalData] = useState([]);
+  const [modalTitle, setModalTitle] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -36,6 +39,32 @@ const User = () => {
     if (file) {
       const data = await uploadImage(token, file);
       setUser((prevUser) => ({ ...prevUser, profilePicture: data }));
+    }
+  };
+
+  const fetchFollowers = async () => {
+    try {
+      const followers = await getFollowers(user._id, token);
+      console.log(followers)
+
+        setModalData(followers.followers || []);
+        setModalTitle("Followers");
+        setModalVisible(true);
+      
+    } catch (error) {
+      console.error("Error fetching followers:", error.message);
+    }
+  };
+
+  const fetchFollowing = async () => {
+    try {
+      const following = await getFollowing(user._id, token);
+      console.log(following)
+      setModalData(following.following || []);
+      setModalTitle("Following");
+      setModalVisible(true);
+    } catch (error) {
+      console.error("Error fetching following:", error.message);
     }
   };
 
@@ -106,19 +135,47 @@ const User = () => {
           icon={<FaPeopleRoof className="text-4xl text-yellow-400" />}
           label="Followers"
           value={user.followers?.length || 0}
+          onClick={fetchFollowers}
         />
         <StatCard
           icon={<FaPeopleGroup className="text-4xl text-yellow-400" />}
           label="Following"
           value={user.following?.length || 0}
+          onClick={fetchFollowing}
         />
       </div>
+
+      {/* Modal */}
+      {isModalVisible && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-bold mb-4">{modalTitle}</h2>
+            <ul className="space-y-2">
+              {modalData.map((item) => (
+                <li key={item._id} className="text-gray-700">
+                  <Image src={item.profilePicture} alt="img" width={50} height={50}/>
+                  {item.username}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg"
+              onClick={() => setModalVisible(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-const StatCard = ({ icon, label, value }) => (
-  <div className="flex flex-col items-center bg-gray-900 p-4 rounded-lg shadow-sm  hover:shadow-purple-300 transform hover:scale-105 transition duration-300">
+const StatCard = ({ icon, label, value, onClick }) => (
+  <div
+    className="flex flex-col items-center bg-gray-900 p-4 rounded-lg shadow-sm hover:shadow-purple-300 transform hover:scale-105 transition duration-300 cursor-pointer"
+    onClick={onClick}
+  >
     {icon}
     <p className="mt-2 text-lg text-gray-300">{label}</p>
     <p className="text-2xl font-bold mt-1">{value}</p>

@@ -23,34 +23,50 @@ const UserId = () => {
   });
 
   const [isFollowing, setIsFollowing] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
 
   const myUser = async (token) => {
-    const data = await getUser(id, token);
-    if (data) {
-      setUser(data);
-      const currentUserId = localStorage.getItem('currentUserId'); // Fetch your logged-in user's ID
-      setIsFollowing(data.followers.includes(currentUserId));
-    } else {
-      console.log("Error");
+    try {
+      const data = await getUser(id, token);
+      console.log(data)
+      if (data) {
+        setUser(data);
+        const currentUserId = localStorage.getItem('currentUserId'); // Fetch logged-in user's ID
+        setIsFollowing(data.followers.includes(currentUserId));
+      } else {
+        console.error("Error fetching user data");
+      }
+    } catch (error) {
+      console.error("Error in myUser function:", error.message);
     }
   };
 
   const handleFollow = async () => {
-    const token = localStorage.getItem('token');
-    if (isFollowing) {
-      await unfollowUser(id, token);
-      setIsFollowing(false);
-      setUser((prev) => ({
-        ...prev,
-        followers: prev.followers.filter((followerId) => followerId !== id),
-      }));
-    } else {
-      await followUser(id, token);
-      setIsFollowing(true);
-      setUser((prev) => ({
-        ...prev,
-        followers: [...prev.followers, id],
-      }));
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert("You must be logged in to follow users.");
+        return;
+      }
+
+      if (isFollowing) {
+        await unfollowUser(id, token);
+        setIsFollowing(false);
+        setUser((prev) => ({
+          ...prev,
+          followers: prev.followers.filter((followerId) => followerId !== localStorage.getItem('currentUserId')),
+        }));
+      } else {
+        await followUser(id, token);
+        setIsFollowing(true);
+        setUser((prev) => ({
+          ...prev,
+          followers: [...prev.followers, localStorage.getItem('currentUserId')],
+        }));
+      }
+    } catch (error) {
+      console.error("Error in handleFollow function:", error.message);
     }
   };
 
@@ -93,12 +109,11 @@ const UserId = () => {
               {isFollowing ? 'Unfollow' : 'Follow'}
             </button>
             <p className="flex items-center justify-center md:justify-start text-lg mt-2 text-gray-300">
-  <MdOutlineEmail className="mr-2" />
-  <a href={`mailto:${user.email}`} className="hover:text-blue-500">
-    {user.email || "N/A"}
-  </a>
-</p>
-
+              <MdOutlineEmail className="mr-2" />
+              <a href={`mailto:${user.email}`} className="hover:text-blue-500">
+                {user.email || "N/A"}
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -119,22 +134,46 @@ const UserId = () => {
           icon={<FaPeopleRoof className="text-4xl text-yellow-400" />}
           label="Followers"
           value={user.followers?.length || 0}
+          onClick={() => setShowFollowers(!showFollowers)}
         />
+        {showFollowers && (
+          <div className="absolute top-0 right-0 bg-white text-black p-4 rounded-lg shadow-lg">
+            <h3 className="text-xl font-bold">Followers</h3>
+            <ul>
+              {user.followers.map((follower, index) => (
+                <li key={index}>{follower}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         <StatCard
           icon={<FaPeopleGroup className="text-4xl text-yellow-400" />}
           label="Following"
           value={user.following?.length || 0}
+          onClick={() => setShowFollowing(!showFollowing)}
         />
+        {showFollowing && (
+          <div className="absolute top-0 right-0 bg-white text-black p-4 rounded-lg shadow-lg">
+            <h3 className="text-xl font-bold">Following</h3>
+            <ul>
+              {user.following.map((followedUser, index) => (
+                <li key={index}>{followedUser}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-const StatCard = ({ icon, label, value }) => (
+const StatCard = ({ icon, label, value, onClick }) => (
   <div className="flex flex-col items-center bg-gray-900 p-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300">
     {icon}
     <p className="mt-2 text-lg text-gray-300">{label}</p>
-    <p className="text-2xl font-bold mt-1">{value}</p>
+    <p className="text-2xl font-bold mt-1 cursor-pointer" onClick={onClick}>
+      {value}
+    </p>
   </div>
 );
 

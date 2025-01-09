@@ -28,6 +28,7 @@ const Login = () => {
     const data = await login(email, password);
     if (data) {
       localStorage.setItem("token", data.token);
+      localStorage.setItem("currentUserId" , data.id);
       setLoading(false);
       router.push("/pages/profile");
     }
