@@ -41,9 +41,9 @@ const Id = () => {
     const token = localStorage.getItem("token");
     setToken(token);
     const content = async () => {
-      const data = await getStory(token, id);
+      const data = await getStory(id);
       if (data?.Message) {
-        setChapters(data.Message);
+        setChapters(data.Message.content);
       }
       console.log(data);
     };
