@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { getStories } from '@/app/services/story'; // Import your API function
 import Link from 'next/link';
+import Spinner from '@/app/components/Spinner'
 
 const RecentStories = () => {
   const [stories, setStories] = useState([]);
@@ -33,7 +34,7 @@ const RecentStories = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner/>;
   }
 
   return (

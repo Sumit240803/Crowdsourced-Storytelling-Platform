@@ -11,7 +11,7 @@ import { TiGroupOutline } from 'react-icons/ti';
 
 const UserId = () => {
   const { id } = useParams();
-
+  const [loading , setLoading] = useState(false);
   const [user, setUser] = useState({
     username: '',
     email: '',
@@ -28,9 +28,11 @@ const UserId = () => {
 
   const myUser = async (token) => {
     try {
+      setLoading(true);
       const data = await getUser(id, token);
       console.log(data)
       if (data) {
+        setLoading(false);
         setUser(data);
         const currentUserId = localStorage.getItem('currentUserId'); // Fetch logged-in user's ID
         setIsFollowing(data.followers.includes(currentUserId));
