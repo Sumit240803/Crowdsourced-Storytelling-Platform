@@ -38,13 +38,9 @@ export const getChapter = async(token , id)=>{
         console.log(error);
     }
 }
-export const getStory = async(token , id)=>{
+export const getStory = async(id)=>{
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/story/getStory/${id}`, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/story/getStory/${id}`);
         if (response.ok) {
             const data = await response.json();
             return data;

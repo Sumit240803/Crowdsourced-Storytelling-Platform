@@ -74,11 +74,11 @@ router.get("/chapters/:id" , verifyJwt , async(req,res)=>{
 router.get("/getStory/:id" , async(req,res)=>{
     try {
         const {id} = req.params;
-        const story = await Story.findById(id).populate('content');
+        const story = await Story.findById(id).populate('content author');
         if(!story){
             res.status(404).json({"Message" : "Not found"});
         }
-        res.status(200).json({"Message" : story.content});
+        res.status(200).json({"Message" : story});
     } catch (error) {
         return res.status(404).json({"Message" : error})
     }

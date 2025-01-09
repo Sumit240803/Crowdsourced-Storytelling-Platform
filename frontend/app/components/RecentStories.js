@@ -53,7 +53,7 @@ const RecentStories = () => {
           <div className='font-comic text-lg my-1 bg-gray-600 rounded-xl p-2 border-2 border-gray-800'>
             {story.synopsis}
           </div>
-          <Link href={`/pages/story/${story._id}`} className='text-blue-200 underline hover:text-purple-400 cursor-pointer'>
+          <Link href={`/pages/stories/read/${story._id}`} className='text-blue-200 underline hover:text-purple-400 cursor-pointer'>
             Read More
           </Link>
         </div>
