@@ -21,8 +21,8 @@ const User = () => {
   const [isLoadingUser, setLoadingUser] = useState(true); // State for user data loading
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
       if (token) {
         const data = await me(token);
         if (data && data.User) {
