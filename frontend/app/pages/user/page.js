@@ -11,7 +11,7 @@ import { FaPeopleRoof, FaPeopleGroup } from "react-icons/fa6";
 
 const User = () => {
   const showAlert = useAuth();
-  const token = localStorage.getItem("token");
+  
   const [user, setUser] = useState(null);
   const fileInputRef = useRef(null);
   const [modalData, setModalData] = useState([]);
@@ -21,6 +21,7 @@ const User = () => {
   const [isLoadingUser, setLoadingUser] = useState(true); // State for user data loading
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const fetchUserData = async () => {
       if (token) {
         const data = await me(token);
@@ -38,6 +39,7 @@ const User = () => {
   };
 
   const handleImageChange = async (event) => {
+    const token = localStorage.getItem("token");
     const file = event.target.files[0];
     if (file) {
       setUploading(true); // Start uploading
@@ -53,7 +55,9 @@ const User = () => {
   };
 
   const fetchFollowers = async () => {
+
     try {
+      const token = localStorage.getItem("token");
       const followers = await getFollowers(user._id, token);
       setModalData(followers.followers || []);
       setModalTitle("Followers");
@@ -65,6 +69,7 @@ const User = () => {
 
   const fetchFollowing = async () => {
     try {
+      const token = localStorage.getItem("token");
       const following = await getFollowing(user._id, token);
       setModalData(following.following || []);
       setModalTitle("Following");
