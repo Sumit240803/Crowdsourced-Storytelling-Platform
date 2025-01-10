@@ -32,7 +32,7 @@ const User = () => {
       }
     };
     fetchUserData();
-  }, [token]);
+  }, []);
 
   const handleImageClick = () => {
     fileInputRef.current.click();
