@@ -1,5 +1,6 @@
 "use client";
 import Nav from '@/app/components/profile/Nav';
+import Spinner from '@/app/components/Spinner';
 import { logout } from '@/app/services/auth';
 import { checkAuth } from '@/app/services/checkAuth';
 import { getInvite, joinedStories } from '@/app/services/user';
@@ -8,15 +9,19 @@ import React, { useEffect, useState } from 'react';
 
 const MyStory = () => {
   const [stories, setStories] = useState({ storiesParticipated: [], storiesCreated: [] });
-
+  const [loading , setLoading] = useState(false);
   useEffect(() => {
     if(checkAuth()){
+      setLoading(true);
       const fetchData = async () => {
         const token = localStorage.getItem("token");
         const data = await joinedStories(token);
       const invitation = await getInvite(token);
-      console.log(data);
-      console.log(invitation);
+      if(data){
+        setLoading(false);
+      }
+      //console.log(data);
+      //console.log(invitation);
 
       setStories({
         storiesParticipated: data.storiesParticipated || [],
@@ -37,6 +42,7 @@ const MyStory = () => {
       </div>
 
       {/* Stories Participated Section */}
+      {loading && <Spinner/>}
       <div className="my-8 p-4 max-w-6xl mx-auto">
         <h2 className="text-5xl font-bold font-amaranth mb-5 text-purple-800 text-center">Stories Participated</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -56,6 +62,7 @@ const MyStory = () => {
       </div>
 
       {/* Stories Created Section */}
+      {loading && <Spinner/>}
       <div className="my-8 p-4 max-w-6xl mx-auto">
         <h2 className="text-5xl font-amaranth font-bold mb-5 text-purple-800 text-center">Stories Created</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
