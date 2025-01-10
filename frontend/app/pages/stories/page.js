@@ -1,5 +1,7 @@
 "use client";
 import Nav from '@/app/components/profile/Nav';
+import { logout } from '@/app/services/auth';
+import { checkAuth } from '@/app/services/checkAuth';
 import { getInvite, joinedStories } from '@/app/services/user';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -8,9 +10,10 @@ const MyStory = () => {
   const [stories, setStories] = useState({ storiesParticipated: [], storiesCreated: [] });
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      const data = await joinedStories(token);
+    if(checkAuth()){
+      const fetchData = async () => {
+        const token = localStorage.getItem("token");
+        const data = await joinedStories(token);
       const invitation = await getInvite(token);
       console.log(data);
       console.log(invitation);
@@ -21,6 +24,9 @@ const MyStory = () => {
       });
     };
     fetchData();
+  }else{
+    logout()
+  }
   }, []);
 
   return (

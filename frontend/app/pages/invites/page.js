@@ -1,5 +1,7 @@
 "use client";
 import Nav from '@/app/components/profile/Nav';
+import { logout } from '@/app/services/auth';
+import { checkAuth } from '@/app/services/checkAuth';
 import { acceptInvite, getInvite, rejectInvite } from '@/app/services/user';
 import React, { useEffect, useState } from 'react';
 
@@ -56,7 +58,12 @@ const Invitess = () => {
   }
 
   useEffect(() => {
-    fetchInvites();
+    if(checkAuth()){
+
+      fetchInvites();
+    }else{
+      logout()
+    }
   }, []);
 
   return (

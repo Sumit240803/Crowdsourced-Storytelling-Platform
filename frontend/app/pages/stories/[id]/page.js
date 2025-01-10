@@ -1,6 +1,7 @@
 "use client";
 import Nav from "@/app/components/profile/Nav";
 import Chapter from "@/app/components/write/Chapter";
+import { checkAuth } from "@/app/services/checkAuth";
 import { getCollab, getStory } from "@/app/services/story";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,17 +39,22 @@ const Id = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setToken(token);
-    const content = async () => {
-      const data = await getStory(id);
-      if (data?.Message) {
-        setChapters(data.Message.content);
-      }
-      console.log(data);
-    };
-    content();
-    collab();
+    if(checkAuth()){
+
+      const token = localStorage.getItem("token");
+      setToken(token);
+      const content = async () => {
+        const data = await getStory(id);
+        if (data?.Message) {
+          setChapters(data.Message.content);
+        }
+        console.log(data);
+      };
+      content();
+      collab();
+    }else{
+      window.location.href = "/"
+    }
   }, [id]);
 
   return (

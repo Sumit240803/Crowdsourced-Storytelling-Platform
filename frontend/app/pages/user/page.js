@@ -17,8 +17,9 @@ const User = () => {
   const [modalData, setModalData] = useState([]);
   const [modalTitle, setModalTitle] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
-
   useEffect(() => {
+    
+  
     const fetchUserData = async () => {
       if (token) {
         const data = await me(token);
