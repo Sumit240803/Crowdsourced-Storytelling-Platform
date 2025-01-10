@@ -2,10 +2,11 @@
 import { createStory } from "@/app/services/user";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-
+import Spinner from "@/app/components/Spinner"
 const Create = () => {
   const [token, setToken] = useState("");
   const router = useRouter();
+  const [loading , setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     synopsis: "",
@@ -35,14 +36,16 @@ const Create = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
 
+    e.preventDefault();
+    
     const dataToSend = {
       ...formData,
       tags: formData.tags.filter((tag) => tag),
     };
 
     try {
+      setLoading(true);
       const data = await createStory(
         dataToSend.title,
         dataToSend.synopsis,
@@ -50,7 +53,8 @@ const Create = () => {
         token
       );
       if (data) {
-        router.replace(`/pages/write/${data.id}`);
+        setLoading(false);
+        router.replace(`/pages/stories`);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -125,6 +129,7 @@ const Create = () => {
             Create
           </button>
         </div>
+        {loading && <Spinner/> }
       </form>
     </div>
   );

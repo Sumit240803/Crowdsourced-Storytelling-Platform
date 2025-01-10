@@ -1,20 +1,25 @@
 import { writeChapter } from "@/app/services/story";
 import React, { useState } from "react";
 import '../../../app/globals.css'
+import Spinner from "../Spinner";
 const Chapter = ({ id, number, name, content, token }) => {
   const [chapterName, setChapterName] = useState(name);
   const [chapterContent, setChapterContent] = useState(content);
-
+  const [ loading , setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const data = await writeChapter(token, chapterContent, id, chapterName, number);
-    console.log(data);
-    console.log("Updated Chapter:", {
+    if(data){
+      setLoading(false);
+    }
+   // console.log(data);
+   /* console.log("Updated Chapter:", {
       storyId: id,
       name: chapterName,
       content: chapterContent,
       number: number,
-    });
+    });*/
   };
 
   return (
@@ -70,6 +75,7 @@ const Chapter = ({ id, number, name, content, token }) => {
         >
           Save Changes
         </button>
+        {loading && <Spinner/>}
       </form>
     </div>
   );
