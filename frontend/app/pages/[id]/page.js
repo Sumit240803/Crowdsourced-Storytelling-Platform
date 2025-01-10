@@ -83,6 +83,7 @@ const UserId = () => {
         myUser(token);
       }
     }else{
+      alert("Login First")
       logout()
     }
   }, [id]);

@@ -1,6 +1,7 @@
 "use client";
 import { getStory } from "@/app/services/story";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -33,7 +34,7 @@ const Read = () => {
         <h1 className="text-4xl shadow-lg w-fit p-2 rounded-lg font-bold bg-white font-amaranth text-purple-600">{story.title}</h1>
         <p className="text-gray-500 font-amaranth mt-2 shadow-lg italic bg-white p-2 rounded-lg">{story.synopsis}</p>
         <div className="mt-8 text-sm text-gray-500">
-        <p className="text-lg flex items-center font-comic">Author: {story.author.username} <Image src={story.author.profilePicture} width={50} height={50} alt="img" className="rounded-full shadow-lg border-2 mx-4 border-purple-300 shadow-purple-300"/></p>
+        <Link href={`/pages/${story.author._id}`} className="text-lg flex items-center font-comic">Author: {story.author.username} <Image src={story.author.profilePicture} width={50} height={50} alt="img" className="rounded-full shadow-lg border-2 mx-4 border-purple-300 shadow-purple-300"/></Link>
         
       </div>
         <div className="mt-4 flex flex-wrap gap-2">

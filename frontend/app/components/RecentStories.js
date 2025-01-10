@@ -65,17 +65,17 @@ const RecentStories = () => {
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}
-          className='bg-purple-500 p-2 rounded-lg text-white disabled:bg-gray-500'
+          className='bg-purple-500 p-2 rounded-lg text-white disabled:bg-gray-500 font-amaranth'
         >
           Previous
         </button>
-        <span className='text-lg'>
+        <span className='text-lg text-purple-500 font-pacifico'>
           Page {page} of {totalPages}
         </span>
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page === totalPages}
-          className='bg-purple-500 p-2 rounded-lg text-white disabled:bg-gray-500'
+          className='bg-purple-500 p-2 rounded-lg text-white disabled:bg-gray-500 font-amaranth'
         >
           Next
         </button>
