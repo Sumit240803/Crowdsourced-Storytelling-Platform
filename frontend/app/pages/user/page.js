@@ -17,15 +17,17 @@ const User = () => {
   const [modalData, setModalData] = useState([]);
   const [modalTitle, setModalTitle] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isUploading, setUploading] = useState(false); // New state for image upload
+  const [isLoadingUser, setLoadingUser] = useState(true); // State for user data loading
+
   useEffect(() => {
-    
-  
     const fetchUserData = async () => {
       if (token) {
         const data = await me(token);
         if (data && data.User) {
           setUser(data.User);
         }
+        setLoadingUser(false); // Stop loading once user data is fetched
       }
     };
     fetchUserData();
@@ -38,20 +40,24 @@ const User = () => {
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const data = await uploadImage(token, file);
-      setUser((prevUser) => ({ ...prevUser, profilePicture: data }));
+      setUploading(true); // Start uploading
+      try {
+        const data = await uploadImage(token, file);
+        setUser((prevUser) => ({ ...prevUser, profilePicture: data }));
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      } finally {
+        setUploading(false); // Stop uploading
+      }
     }
   };
 
   const fetchFollowers = async () => {
     try {
       const followers = await getFollowers(user._id, token);
-      console.log(followers)
-
-        setModalData(followers.followers || []);
-        setModalTitle("Followers");
-        setModalVisible(true);
-      
+      setModalData(followers.followers || []);
+      setModalTitle("Followers");
+      setModalVisible(true);
     } catch (error) {
       console.error("Error fetching followers:", error.message);
     }
@@ -60,7 +66,6 @@ const User = () => {
   const fetchFollowing = async () => {
     try {
       const following = await getFollowing(user._id, token);
-      console.log(following)
       setModalData(following.following || []);
       setModalTitle("Following");
       setModalVisible(true);
@@ -73,7 +78,7 @@ const User = () => {
     return <div className="text-4xl text-center mt-10 text-red-500">Please Login First.</div>;
   }
 
-  if (!user) {
+  if (isLoadingUser) {
     return <div className="text-2xl text-center mt-10 text-gray-500">Loading user data...</div>;
   }
 
@@ -84,7 +89,11 @@ const User = () => {
       <div className="rounded-xl max-w-4xl mx-auto p-8 bg-gradient-to-r from-gray-800 via-gray-900 to-black shadow-2xl shadow-purple-800 mt-10 text-white relative">
         <div className="flex flex-col md:flex-row items-center space-y-6 shadow-2xl md:space-y-0 md:space-x-8">
           <div className="relative">
-            {user.profilePicture ? (
+            {isUploading ? (
+              <div className="w-32 h-32 flex items-center justify-center rounded-full border-4 border-purple-500 bg-gray-700">
+                Uploading...
+              </div>
+            ) : user.profilePicture ? (
               <Image
                 src={user.profilePicture}
                 alt="Profile"
@@ -119,7 +128,6 @@ const User = () => {
           </div>
         </div>
       </div>
-
       {/* User Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto p-6 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-xl text-white">
         <StatCard
@@ -145,7 +153,6 @@ const User = () => {
           onClick={fetchFollowing}
         />
       </div>
-
       {/* Modal */}
       {isModalVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
@@ -154,7 +161,7 @@ const User = () => {
             <ul className="space-y-2">
               {modalData.map((item) => (
                 <li key={item._id} className="text-gray-700">
-                  <Image src={item.profilePicture} alt="img" width={50} height={50}/>
+                  <Image src={item.profilePicture} alt="img" width={50} height={50} />
                   {item.username}
                 </li>
               ))}
