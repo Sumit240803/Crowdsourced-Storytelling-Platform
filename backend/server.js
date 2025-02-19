@@ -13,7 +13,7 @@ app.use(compression());
 app.use("/api/auth",auth)
 app.use("/api/user",user)
 app.use("/api/story",story)
-mongoose.connect(process.env.DB_PROD).then(()=>console.log("DB started")).catch(err=>{console.log("Connection error",err)});
+mongoose.connect(process.env.DB_DEV).then(()=>console.log("DB started")).catch(err=>{console.log("Connection error",err)});
 
 app.listen(process.env.PORT||5000 , ()=>{
     console.log(`Server Running at : ${process.env.PORT}`);
