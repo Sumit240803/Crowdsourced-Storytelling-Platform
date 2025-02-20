@@ -10,8 +10,8 @@ export default function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setUsers((prev) => prev + Math.floor(Math.random() * 5));
-    }, 2000);
+      setUsers((prev) => prev + Math.floor(Math.random() * 2));
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
 
@@ -55,7 +55,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="py-12 max-w-5xl mx-auto px-6">
+      <div className="pb-28 max-w-5xl mx-auto px-6">
         <h2 className="text-3xl font-bold text-center">Stories Shaped by Many Minds</h2>
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
           {featuredStories.map((story) => (
@@ -68,7 +68,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="py-12 max-w-5xl mx-auto px-6 text-center">
+      <div className="py-12 my-32 max-w-5xl mx-auto px-6 text-center">
         <h2 className="text-3xl font-bold">A Global Network of Creators</h2>
         <p className="text-gray-400 mt-2">Over <span className="font-bold text-blue-400">{users + 5000}</span> writers collaborating worldwide!</p>
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
