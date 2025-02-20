@@ -1,4 +1,5 @@
 "use client";
+import PublicNav from "@/app/components/PublicNav";
 import { getStory } from "@/app/services/story";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +31,10 @@ const Read = () => {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
+      <div className="mb-5">
+
+      <PublicNav/>
+      </div>
       <div className="mb-6">
         <h1 className="text-4xl shadow-lg w-fit p-2 rounded-lg font-bold bg-white font-amaranth text-purple-600">{story.title}</h1>
         <p className="text-gray-500 font-amaranth mt-2 shadow-lg italic bg-white p-2 rounded-lg">{story.synopsis}</p>
