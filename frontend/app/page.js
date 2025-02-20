@@ -47,7 +47,7 @@ export default function Home() {
           <Link href={"/pages/login"} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow">
             Start Writing
           </Link>
-          <Link href={"/pages/stories"} className="px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-semibold rounded-lg shadow">
+          <Link href={"/pages/recent-stories"} className="px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-semibold rounded-lg shadow">
             Explore Stories
           </Link>
         </div>
