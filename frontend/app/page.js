@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import PublicNav from "./components/PublicNav";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Home() {
   const [users, setUsers] = useState(0);
@@ -43,12 +44,12 @@ export default function Home() {
           Join a community of storytellers where creativity knows no bounds. Start a story, collaborate with others, and watch your imagination unfold in real time.
         </p>
         <div className="mt-6 flex space-x-4">
-          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow">
+          <Link href={"/pages/login"} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow">
             Start Writing
-          </button>
-          <button className="px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-semibold rounded-lg shadow">
+          </Link>
+          <Link href={"/pages/stories"} className="px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-semibold rounded-lg shadow">
             Explore Stories
-          </button>
+          </Link>
         </div>
         <div className="mt-6 text-gray-400 text-sm">
           <span className="font-bold text-blue-400">{users}</span> active users writing now
