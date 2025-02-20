@@ -16,7 +16,7 @@ const Write = () => {
     setToken(token);*/
   })
     return (
-      <div className="h-screen  scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-gray-500/70 scrollbar-track-transparent">
+      <div className="h-screen bg-black scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-gray-500/70 scrollbar-track-transparent">
         <div>
           <Nav />
         </div>

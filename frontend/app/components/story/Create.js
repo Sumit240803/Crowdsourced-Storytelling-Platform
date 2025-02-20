@@ -62,7 +62,7 @@ const Create = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-gray-950 rounded-xl shadow-xl shadow-purple-800 font-amaranth sm:p-8">
+    <div className="max-w-5xl mx-auto p-6 bg-gray-950 rounded-xl shadow-md border-2 border-purple-400  font-amaranth sm:p-8">
       <h1 className="text-2xl font-bold mb-6 text-center text-purple-500">
         Create a New Story
       </h1>

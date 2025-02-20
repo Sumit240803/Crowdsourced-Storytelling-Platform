@@ -3,12 +3,13 @@ import { useState } from 'react';
 
 import { motion } from 'framer-motion';
 import { login, register } from '@/app/services/auth';
+import { useRouter } from 'next/navigation';
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState('');
-
+  const router = useRouter();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -16,14 +17,25 @@ const AuthForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
-    const { username, email, password } = formData;
-    const response = isLogin ? await login(email, password) : await register(username, email, password);
-    
-    if (!response) {
-      setError('Invalid credentials or error occurred.');
+  
+    try {
+      const { username, email, password } = formData;
+      
+      if (isLogin) {
+       const data = await login(email, password);
+       localStorage.setItem("token" , data.token);
+       
+        alert("Login Success");
+        router.replace("/pages/user");
+      } else {
+        await register(username, email, password);
+      }
+    } catch (error) {
+      console.error("Authentication Error:", error);
+      setError('Invalid credentials or an error occurred.');
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-6">

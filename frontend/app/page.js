@@ -80,6 +80,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+      
 
       <div className="py-12 max-w-md mx-auto px-6 bg-gray-800 p-8 rounded-lg shadow-lg text-center">
         <h2 className="text-2xl font-bold">Subscribe to Our Newsletter</h2>
