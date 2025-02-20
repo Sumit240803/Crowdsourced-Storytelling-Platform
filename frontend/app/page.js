@@ -82,12 +82,12 @@ export default function Home() {
       </div>
 
       <div className="py-12 max-w-md mx-auto px-6 bg-gray-800 p-8 rounded-lg shadow-lg text-center">
-        <h2 className="text-2xl font-bold">Your Next Great Story Starts Here</h2>
-        <p className="text-gray-400 mt-2">Sign up to start writing and collaborating for free!</p>
+        <h2 className="text-2xl font-bold">Subscribe to Our Newsletter</h2>
+       
         <div className="mt-4">
           <input type="email" placeholder="Enter your email" className="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <button className="w-full mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow">
-            Start Writing for Free
+            Subscribe
           </button>
         </div>
       </div>

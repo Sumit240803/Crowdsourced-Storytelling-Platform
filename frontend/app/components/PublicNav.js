@@ -25,7 +25,7 @@ const PublicNav = () => {
         </Link>
         <div>
           {showLogin ? (
-            <Login />
+            <Link href={"/pages/login"}>Get Started</Link>
           ) : (
             <Link className='' href="/pages/profile">Profile</Link>
           )}

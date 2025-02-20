@@ -63,7 +63,7 @@ const Login = () => {
 
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="bg-white bg-opacity-15 p-6 rounded-md w-96 shadow-lg">
+          <div className="bg-white  p-6 rounded-md w-96 shadow-lg">
             {showRegister ? (
               <form onSubmit={handleSubmitRegister} >
                 <div className="mb-4">
